@@ -1,6 +1,9 @@
 // One component per phase of a round.
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useState, type CSSProperties, type FormEvent, type ReactNode } from 'react'
+import type { Player } from '../../core/room/api'
+import { Avatar } from '../../core/ui/Avatar'
 import type { Clue, RoundActions, Snapshot } from './api'
+import { Confetti } from './Confetti'
 import { s } from './strings.de'
 
 export interface PhaseProps {
@@ -8,6 +11,7 @@ export interface PhaseProps {
   userId: string
   playerIds: string[]
   nameOf: (id: string) => string
+  playerOf: (id: string) => Player | undefined
   isGuesser: boolean
   isHost: boolean
   actions: RoundActions
@@ -17,7 +21,10 @@ export interface PhaseProps {
 
 function Waiting({ children }: { children: ReactNode }) {
   return (
-    <section className="card center">
+    <section className="card center waiting">
+      <span className="waiting-icon" aria-hidden>
+        ✏️
+      </span>
       <p className="muted">{children}</p>
     </section>
   )
@@ -25,25 +32,42 @@ function Waiting({ children }: { children: ReactNode }) {
 
 function SecretWord({ word }: { word: string }) {
   return (
-    <section className="card center">
+    <section className="card center secret">
       <p className="muted">{s.theWord}</p>
       <p className="secret-word">{word}</p>
     </section>
   )
 }
 
-function ClueList({ clues, nameOf }: { clues: Clue[]; nameOf: PhaseProps['nameOf'] }) {
+type Lookup = Pick<PhaseProps, 'nameOf' | 'playerOf'>
+
+function ClueContent({ clue, nameOf, playerOf }: { clue: Clue } & Lookup) {
+  return (
+    <>
+      <Avatar player={playerOf(clue.player_id)} />
+      <span className="clue-body">
+        <span>
+          <span className="clue-text">{clue.clue}</span>
+        </span>
+        <span className="clue-meta">
+          {nameOf(clue.player_id)}
+          {isCancelled(clue) &&
+            ` · ${clue.auto_cancelled ? s.autoCancelled : s.manualCancelled}`}
+        </span>
+      </span>
+    </>
+  )
+}
+
+function ClueList({ clues, reveal, ...lookup }: { clues: Clue[]; reveal?: boolean } & Lookup) {
   if (clues.length === 0) return <p className="muted center">{s.noClues}</p>
   return (
-    <ul className="clue-list">
-      {clues.map((c) => (
-        <li key={c.player_id} className={isCancelled(c) ? 'clue cancelled' : 'clue'}>
-          <span className="clue-text">{c.clue}</span>
-          <span className="muted">
-            {nameOf(c.player_id)}
-            {isCancelled(c) &&
-              ` · ${c.auto_cancelled ? s.autoCancelled : s.manualCancelled}`}
-          </span>
+    <ul className={reveal ? 'clue-list reveal' : 'clue-list'}>
+      {clues.map((c, i) => (
+        <li key={c.player_id} style={{ '--i': i } as CSSProperties}>
+          <div className={isCancelled(c) ? 'clue cancelled' : 'clue'}>
+            <ClueContent clue={c} {...lookup} />
+          </div>
         </li>
       ))}
     </ul>
@@ -73,20 +97,33 @@ export function ChoosingWord({ snapshot, isGuesser, actions, busy, run }: PhaseP
   )
 }
 
-function Progress({ snapshot, userId, playerIds, nameOf }: PhaseProps) {
+function Progress({ snapshot, userId, playerIds, nameOf, playerOf }: PhaseProps) {
   const { guesser_id, submitted_ids } = snapshot.game
   const givers = playerIds.filter((id) => id !== guesser_id)
   const missing = givers.filter((id) => !submitted_ids.includes(id) && id !== userId)
   return (
-    <p className="muted center">
-      {s.progress(submitted_ids.length, givers.length)}
-      {missing.length > 0 && (
-        <>
-          <br />
-          {s.waitingFor(missing.map(nameOf).join(', '))}
-        </>
-      )}
-    </p>
+    <>
+      <ul className="givers">
+        {givers.map((id) => {
+          const done = submitted_ids.includes(id)
+          return (
+            <li key={id} className={done ? 'giver done' : 'giver'}>
+              <Avatar player={playerOf(id)} checked={done} />
+              {nameOf(id)}
+            </li>
+          )
+        })}
+      </ul>
+      <p className="muted center" aria-live="polite">
+        {s.progress(submitted_ids.length, givers.length)}
+        {missing.length > 0 && (
+          <>
+            <br />
+            {s.waitingFor(missing.map(nameOf).join(', '))}
+          </>
+        )}
+      </p>
+    </>
   )
 }
 
@@ -136,7 +173,8 @@ export function WritingClues(props: PhaseProps) {
 }
 
 export function ReviewingClues(props: PhaseProps) {
-  const { snapshot, userId, playerIds, nameOf, isGuesser, isHost, actions, busy, run } = props
+  const { snapshot, userId, playerIds, nameOf, playerOf, isGuesser, isHost } = props
+  const { actions, busy, run } = props
   if (isGuesser) return <Waiting>{s.guesserWaitsReview}</Waiting>
 
   const { confirmed_ids } = snapshot.game
@@ -156,12 +194,7 @@ export function ReviewingClues(props: PhaseProps) {
               disabled={busy || c.auto_cancelled}
               onClick={() => run(() => actions.toggleClue(c.player_id))}
             >
-              <span className="clue-text">{c.clue}</span>
-              <span className="muted">
-                {nameOf(c.player_id)}
-                {isCancelled(c) &&
-                  ` · ${c.auto_cancelled ? s.autoCancelled : s.manualCancelled}`}
-              </span>
+              <ClueContent clue={c} nameOf={nameOf} playerOf={playerOf} />
             </button>
           </li>
         ))}
@@ -178,14 +211,15 @@ export function ReviewingClues(props: PhaseProps) {
   )
 }
 
-export function Guessing({ snapshot, nameOf, isGuesser, actions, busy, run }: PhaseProps) {
+export function Guessing(props: PhaseProps) {
+  const { snapshot, nameOf, playerOf, isGuesser, actions, busy, run } = props
   const [text, setText] = useState('')
 
   if (!isGuesser) {
     return (
       <>
         {snapshot.word && <SecretWord word={snapshot.word} />}
-        <ClueList clues={snapshot.clues} nameOf={nameOf} />
+        <ClueList clues={snapshot.clues} nameOf={nameOf} playerOf={playerOf} />
         <p className="muted center">{s.waitingForGuess(nameOf(snapshot.game.guesser_id))}</p>
       </>
     )
@@ -199,7 +233,7 @@ export function Guessing({ snapshot, nameOf, isGuesser, actions, busy, run }: Ph
   return (
     <>
       <h2>{s.cluesForYou}</h2>
-      <ClueList clues={snapshot.clues} nameOf={nameOf} />
+      <ClueList clues={snapshot.clues} nameOf={nameOf} playerOf={playerOf} reveal />
       <form className="card stack" onSubmit={submit}>
         <label>
           {s.yourGuess}
@@ -231,6 +265,7 @@ export function Guessing({ snapshot, nameOf, isGuesser, actions, busy, run }: Ph
 export function RoundResult({
   snapshot,
   nameOf,
+  playerOf,
   isGuesser,
   isHost,
   actions,
@@ -251,7 +286,9 @@ export function RoundResult({
 
   return (
     <>
-      <section className={`card center result ${entry.result}`}>
+      {entry.result === 'correct' && <Confetti />}
+      {/* Keyed by result, so "accept anyway" replays the animation. */}
+      <section key={entry.result} className={`card center result ${entry.result}`}>
         <p className="result-headline">{headline}</p>
         {entry.guess && <p>{s.guessWas(entry.guess)}</p>}
         {entry.result === 'wrong' && (
@@ -259,7 +296,7 @@ export function RoundResult({
         )}
       </section>
       {word && <SecretWord word={word} />}
-      {clues.length > 0 && <ClueList clues={clues} nameOf={nameOf} />}
+      {clues.length > 0 && <ClueList clues={clues} nameOf={nameOf} playerOf={playerOf} />}
       {entry.result === 'wrong' && !isGuesser && (
         <button
           className="button secondary"

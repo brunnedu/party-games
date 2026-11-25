@@ -1,5 +1,6 @@
 import type { Player, Room } from '../room/api'
 import { t } from '../strings.de'
+import { Avatar } from './Avatar'
 
 export function PlayerList({
   room,
@@ -20,7 +21,7 @@ export function PlayerList({
         const isOnline = !online || p.user_id === userId || online.has(p.user_id)
         return (
           <li key={p.user_id}>
-            <span className={isOnline ? 'dot on' : 'dot'} aria-hidden />
+            <Avatar player={p} offline={!isOnline} />
             <span className="player-name">{p.name}</span>
             {p.user_id === userId && <span className="tag">{t.you}</span>}
             {p.user_id === room.host_id && <span className="tag">{t.host}</span>}

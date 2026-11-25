@@ -77,4 +77,13 @@ export const s = {
   confirmAbort: 'Spiel wirklich abbrechen und zurück zur Lobby?',
 
   unknownPlayer: 'Ehemalige Person',
+
+  slots: {
+    correct: 'richtig',
+    wrong: 'falsch',
+    lost: 'verloren',
+    pass: 'gepasst',
+    current: 'aktuell',
+    open: 'offen',
+  },
 }

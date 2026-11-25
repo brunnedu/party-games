@@ -1,3 +1,7 @@
+// Fonts are bundled with the app, so no requests go to font servers.
+import '@fontsource/caveat/600.css'
+import '@fontsource/nunito/400.css'
+import '@fontsource/nunito/700.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './App'

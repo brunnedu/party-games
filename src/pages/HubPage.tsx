@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { Page } from '../core/ui/components'
 import { t } from '../core/strings.de'
@@ -11,7 +12,11 @@ export function HubPage() {
         {GAMES.map((game) => (
           <li key={game.id}>
             <Link to={`/${game.id}`} className="card game-card">
-              <span className="game-icon" aria-hidden>
+              <span
+                className="game-art"
+                style={{ '--game-color': game.color } as CSSProperties}
+                aria-hidden
+              >
                 {game.icon}
               </span>
               <h2>{game.name}</h2>
@@ -20,6 +25,14 @@ export function HubPage() {
             </Link>
           </li>
         ))}
+        <li>
+          <div className="card game-card upcoming">
+            <span className="game-art" aria-hidden>
+              ?
+            </span>
+            <p className="muted center">{t.moreGames}</p>
+          </div>
+        </li>
       </ul>
     </Page>
   )

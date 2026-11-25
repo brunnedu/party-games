@@ -8,6 +8,7 @@ export const justOne: GameDefinition = {
   name: s.name,
   description: s.description,
   icon: '☝️',
+  color: '#9ec9b4',
   minPlayers: 3,
   maxPlayers: 10,
   start: justOneApi.start,

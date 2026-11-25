@@ -12,6 +12,8 @@
     "words": "node scripts/generate-words.ts"
   },
   "dependencies": {
+    "@fontsource/caveat": "^5.3.0",
+    "@fontsource/nunito": "^5.3.0",
     "@supabase/supabase-js": "^2.119.2",
     "qrcode.react": "^4.2.0",
     "react": "^19.3.1",

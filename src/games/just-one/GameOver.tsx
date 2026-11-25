@@ -1,4 +1,7 @@
 import type { Snapshot } from './api'
+import { CardProgress } from './CardProgress'
+import { cardSlots } from './cardSlots'
+import { Confetti } from './Confetti'
 import { s } from './strings.de'
 
 const ICONS = { correct: '✅', wrong: '❌', pass: '⏭️' }
@@ -7,10 +10,12 @@ export function GameOver({ snapshot: { game, history } }: { snapshot: Snapshot }
   const endedEarly = game.cards_used < game.cards_total
   return (
     <>
-      <section className="card center">
+      {!endedEarly && game.score >= 11 && <Confetti />}
+      <section className="card center secret">
         <h2>{s.gameOver}</h2>
         <p className="final-score">{s.finalScore(game.score, game.cards_total)}</p>
         <p>{endedEarly ? s.endedEarly : s.rating(game.score)}</p>
+        <CardProgress slots={cardSlots(game, history)} />
       </section>
       {history.length > 0 && (
         <section className="card">

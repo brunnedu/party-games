@@ -2,24 +2,125 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 4px 12px;
+  gap: 8px 12px;
   color: var(--muted);
 }
 
-.role {
+.status-bar strong {
+  color: var(--text);
+}
+
+/* ---- Progress: one field per card ---------------------------------------- */
+
+.pips {
+  display: flex;
+  gap: 3px;
   width: 100%;
-  font-size: 1.25rem;
+}
+
+.pip {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  border-radius: 3px;
+  background: var(--slot);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pip.correct {
+  background: var(--good);
+}
+
+.pip.wrong {
+  background: var(--bad);
+}
+
+.pip.lost {
+  background: repeating-linear-gradient(45deg, #a8361f 0 3px, #c2614c 3px 6px);
+}
+
+.pip.pass {
+  background: var(--border-strong);
+}
+
+.pip.current {
+  background: var(--surface);
+  border: 2px solid var(--text);
+}
+
+/* ---- Roles --------------------------------------------------------------- */
+
+.role {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  font-family: var(--font-hand);
+  font-size: 2.3rem;
+  font-weight: 600;
+  line-height: 1.1;
   color: var(--text);
 }
 
 .role.guesser {
-  color: var(--accent);
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  background: var(--warn-bg);
+  transform: rotate(-1deg);
+}
+
+/* ---- Cards --------------------------------------------------------------- */
+
+/* Two classes, to win over ".card" regardless of stylesheet order. */
+.card.secret {
+  border-top: 8px solid var(--accent);
 }
 
 .secret-word {
-  font-size: clamp(2rem, 11vw, 3rem);
-  font-weight: 800;
+  font-family: var(--font-hand);
+  font-size: clamp(3rem, 15vw, 4.2rem);
+  font-weight: 600;
+  line-height: 1.1;
   overflow-wrap: anywhere;
+}
+
+.card.waiting {
+  padding-block: 28px;
+}
+
+.waiting-icon {
+  font-size: 2.6rem;
+  animation: scribble 1.6s ease-in-out infinite;
+}
+
+.givers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.giver {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  max-width: 5rem;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.giver:not(.done) .avatar {
+  animation: bob 1.8s ease-in-out infinite;
 }
 
 .clue-list {
@@ -28,19 +129,28 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+}
+
+.clue-list li:nth-child(odd) .clue {
+  transform: rotate(-1deg);
+}
+
+.clue-list li:nth-child(even) .clue {
+  transform: rotate(1deg);
 }
 
 .clue {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   width: 100%;
-  padding: 12px 16px;
+  padding: 10px 14px;
   text-align: left;
   background: var(--surface);
-  color: var(--text);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
 }
 
 button.clue:disabled {
@@ -48,31 +158,71 @@ button.clue:disabled {
 }
 
 button.clue:not(:disabled):hover {
-  border-color: var(--accent);
+  border-color: var(--border-strong);
+}
+
+.clue-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .clue-text {
-  font-size: 1.4rem;
-  font-weight: 700;
+  align-self: flex-start;
+  font-family: var(--font-hand);
+  font-size: 2.1rem;
+  font-weight: 600;
+  line-height: 1.05;
   overflow-wrap: anywhere;
+}
+
+.clue-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
 }
 
 .clue.cancelled {
   border-style: dashed;
+  background: transparent;
+  box-shadow: none;
 }
 
+/* A red marker stroke through cancelled words (also across several lines). */
 .clue.cancelled .clue-text {
-  text-decoration: line-through;
-  opacity: 0.55;
+  display: inline;
+  color: var(--muted);
+  background: linear-gradient(var(--bad), var(--bad)) 0 55% / 100% 3px no-repeat;
+  box-decoration-break: clone;
+  animation: strike 0.5s ease-out 0.15s backwards;
 }
+
+/* The guesser's clues are turned over one after another. */
+.clue-list.reveal li {
+  animation: flip-in 0.55s ease-out backwards;
+  animation-delay: calc(var(--i) * 0.45s + 0.2s);
+}
+
+/* ---- Results -------------------------------------------------------------- */
 
 .result-headline {
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-family: var(--font-hand);
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.result.correct {
+  border-top: 8px solid var(--good);
+  animation: pop-in 0.45s ease-out;
 }
 
 .result.correct .result-headline {
   color: var(--good);
+}
+
+.result.wrong {
+  border-top: 8px solid var(--bad);
+  animation: shake 0.5s ease-in-out;
 }
 
 .result.wrong .result-headline {
@@ -80,15 +230,84 @@ button.clue:not(:disabled):hover {
 }
 
 .final-score {
-  font-size: 2.8rem;
-  font-weight: 800;
+  font-family: var(--font-hand);
+  font-size: 4.2rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.confetti i {
+  position: absolute;
+  top: -20px;
+  width: 9px;
+  height: 14px;
+  animation: fall 2s ease-in forwards;
 }
 
 details summary {
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 details[open] summary {
   margin-bottom: 8px;
+}
+
+@keyframes strike {
+  from {
+    background-size: 0 3px;
+  }
+}
+
+@keyframes flip-in {
+  from {
+    opacity: 0;
+    transform: perspective(600px) rotateX(-90deg);
+  }
+}
+
+@keyframes shake {
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(105vh) rotate(720deg);
+  }
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes scribble {
+  25% {
+    transform: rotate(-12deg);
+  }
+  75% {
+    transform: rotate(12deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti {
+    display: none;
+  }
 }

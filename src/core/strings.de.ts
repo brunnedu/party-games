@@ -5,6 +5,7 @@ export const t = {
   players: (min: number, max: number) => `${min}–${max} Personen`,
   loading: 'Laden …',
   back: 'Zur Übersicht',
+  moreGames: 'Weitere Spiele folgen',
 
   createGame: 'Spiel erstellen',
   joinGame: 'Spiel beitreten',

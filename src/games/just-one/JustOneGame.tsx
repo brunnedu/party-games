@@ -4,10 +4,13 @@ import { roomApi } from '../../core/room/api'
 import { useQuery } from '../../core/room/useQuery'
 import { errorText } from '../../core/rpc'
 import { t } from '../../core/strings.de'
+import { Avatar } from '../../core/ui/Avatar'
 import { ErrorMessage } from '../../core/ui/components'
 import { PlayerList } from '../../core/ui/PlayerList'
 import { useAction } from '../../core/ui/useAction'
 import { justOneApi, roundActions, type Phase } from './api'
+import { CardProgress } from './CardProgress'
+import { cardSlots } from './cardSlots'
 import { GameOver } from './GameOver'
 import {
   ChoosingWord,
@@ -45,7 +48,8 @@ export function JustOneGame({ room, players, userId, online, refresh }: GameView
   const { game } = snapshot
   const isHost = room.host_id === userId
   const isGuesser = game.guesser_id === userId
-  const nameOf = (id: string) => players.find((p) => p.user_id === id)?.name ?? s.unknownPlayer
+  const playerOf = (id: string) => players.find((p) => p.user_id === id)
+  const nameOf = (id: string) => playerOf(id)?.name ?? s.unknownPlayer
   const actions = roundActions(room.id, game.round_no)
   const over = game.phase === 'game_over'
 
@@ -81,6 +85,7 @@ export function JustOneGame({ room, players, userId, online, refresh }: GameView
         userId={userId}
         playerIds={players.map((p) => p.user_id)}
         nameOf={nameOf}
+        playerOf={playerOf}
         isGuesser={isGuesser}
         isHost={isHost}
         actions={actions}
@@ -95,10 +100,12 @@ export function JustOneGame({ room, players, userId, online, refresh }: GameView
       {!over && (
         <div className="status-bar">
           <span>{s.card(game.cards_used + 1, game.cards_total)}</span>
-          <span>{s.score(game.score)}</span>
-          <strong className={isGuesser ? 'role guesser' : 'role'}>
+          <strong>{s.score(game.score)}</strong>
+          <CardProgress slots={cardSlots(game, snapshot.history)} />
+          <div className={isGuesser ? 'role guesser' : 'role'}>
+            <Avatar player={playerOf(game.guesser_id)} />
             {isGuesser ? s.youGuess : s.isGuessing(nameOf(game.guesser_id))}
-          </strong>
+          </div>
         </div>
       )}
       {content}

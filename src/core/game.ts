@@ -18,6 +18,8 @@ export interface GameDefinition {
   name: string
   description: string
   icon: string
+  /** Background color of the game's picture on the hub. */
+  color: string
   /** Keep in sync with the game_types table, which enforces these. */
   minPlayers: number
   maxPlayers: number

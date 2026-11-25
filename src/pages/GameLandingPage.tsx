@@ -27,7 +27,14 @@ export function GameLandingPage() {
   }
 
   return (
-    <Page title={`${game.icon} ${game.name}`}>
+    <Page title={game.name}>
+      <span
+        className="game-art landing-art"
+        style={{ '--game-color': game.color } as React.CSSProperties}
+        aria-hidden
+      >
+        {game.icon}
+      </span>
       <p className="muted">{game.description}</p>
       {lastRoom && (
         <Link to={`/join/${lastRoom}`} className="button secondary">
