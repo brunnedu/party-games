@@ -1,13 +1,15 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { t } from '../strings.de'
+import { Die } from './Die'
 
-export function Page({ title, children }: { title?: string; children: ReactNode }) {
+export function Page({ title, children }: { title?: ReactNode; children: ReactNode }) {
   return (
     <main className="page">
       <header className="page-header">
         <Link to="/" className="home-link" aria-label={t.back}>
-          🎲 {t.appName}
+          <Die className="home-die" />
+          {t.appName}
         </Link>
       </header>
       {title && <h1>{title}</h1>}

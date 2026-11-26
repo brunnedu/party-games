@@ -33,7 +33,7 @@ export function GameLandingPage() {
         style={{ '--game-color': game.color } as React.CSSProperties}
         aria-hidden
       >
-        {game.icon}
+        <game.Logo />
       </span>
       <p className="muted">{game.description}</p>
       {lastRoom && (

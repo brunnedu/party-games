@@ -67,6 +67,9 @@ h2 {
 }
 
 .home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--muted);
   text-decoration: none;
   font-weight: 700;
@@ -272,6 +275,28 @@ li > a.game-card:focus-visible {
   font-size: 4rem;
 }
 
+.game-art svg {
+  width: 82%;
+  height: 86%;
+}
+
+.home-die {
+  width: 30px;
+  height: 30px;
+}
+
+.landing-art svg {
+  width: 82%;
+  height: 68%;
+}
+
+.title-logo {
+  width: 4rem;
+  height: 3rem;
+  margin-right: 8px;
+  vertical-align: -0.6rem;
+}
+
 .game-card.upcoming {
   background: transparent;
   border: 2px dashed var(--border-strong);
@@ -287,8 +312,8 @@ li > a.game-card:focus-visible {
 
 .landing-art {
   align-self: center;
-  width: 7rem;
-  height: 7rem;
+  width: 8rem;
+  height: 8rem;
   border-radius: 50%;
   border: 1px solid var(--border);
 }

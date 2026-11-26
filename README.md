@@ -116,8 +116,8 @@ Presence or the cleanup schedule.
 
 ## Adding a game
 
-1. Create `src/games/<id>/` with the game's components, its text file (`strings.de.ts`) and an
-   `index.ts` that exports a `GameDefinition` ([`src/core/game.ts`](src/core/game.ts)).
+1. Create `src/games/<id>/` with the game's components, its text file (`strings.de.ts`) and a drawn
+   logo (`Logo.tsx`) and an `index.ts` that exports a `GameDefinition` ([`src/core/game.ts`](src/core/game.ts)).
 2. Add it to [`src/games/registry.ts`](src/games/registry.ts).
 3. Add a migration in `supabase/migrations/` that:
    - inserts the game into `game_types` (same id and player limits),

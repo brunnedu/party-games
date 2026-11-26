@@ -1,6 +1,10 @@
 import type { ComponentType } from 'react'
 import type { Player, Room } from './room/api'
 
+export interface LogoProps {
+  className?: string
+}
+
 /** What every game screen gets from the room. */
 export interface GameViewProps {
   room: Room
@@ -17,7 +21,8 @@ export interface GameDefinition {
   id: string
   name: string
   description: string
-  icon: string
+  /** Drawn as SVG, shown on the hub, the landing page and above the game. */
+  Logo: ComponentType<LogoProps>
   /** Background color of the game's picture on the hub. */
   color: string
   /** Keep in sync with the game_types table, which enforces these. */

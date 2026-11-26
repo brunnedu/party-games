@@ -17,7 +17,7 @@ export function HubPage() {
                 style={{ '--game-color': game.color } as CSSProperties}
                 aria-hidden
               >
-                {game.icon}
+                <game.Logo />
               </span>
               <h2>{game.name}</h2>
               <p>{game.description}</p>

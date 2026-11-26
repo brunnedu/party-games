@@ -114,7 +114,14 @@ function RoomView({
   }
 
   return (
-    <Page title={`${game.icon} ${game.name}`}>
+    <Page
+      title={
+        <>
+          <game.Logo className="title-logo" />
+          {game.name}
+        </>
+      }
+    >
       <ErrorMessage>{stale ? t.errors.unknown : ''}</ErrorMessage>
       {hostOffline && (
         <div className="banner">
