@@ -1,0 +1,238 @@
+/* ---- Sentences ------------------------------------------------------------ */
+
+.card.sentence-card {
+  border-top: 8px solid var(--text);
+}
+
+.sentence {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* The black marker bar over the gap. */
+.walter-gap {
+  display: inline-block;
+  padding: 0 10px;
+  background: #1c1710;
+  color: #fffdf6;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.8em;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  transform: rotate(-1.5deg);
+}
+
+.sentence-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card.sentence-option {
+  width: 100%;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.card.sentence-option:hover:not(:disabled),
+.card.sentence-option:focus-visible {
+  border-color: var(--accent);
+}
+
+/* ---- The Sphinx's list ----------------------------------------------------- */
+
+.sphinx-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sphinx-list li,
+.reveal-answer {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.sphinx-list li {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.sphinx-list li.real {
+  border: 2px solid var(--good);
+}
+
+.real-mark {
+  display: block;
+  color: var(--good);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.answer-number {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--surface);
+  font-weight: 700;
+}
+
+/* Typed answers can be long and without spaces. */
+.answer-text {
+  display: block;
+  min-width: 0;
+  font-size: 1.15rem;
+  overflow-wrap: anywhere;
+}
+
+/* ---- Voting by number ------------------------------------------------------ */
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+  gap: 10px;
+}
+
+.number-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 4.2rem;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-bottom-width: 5px;
+  border-radius: 10px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.number-button small {
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.number-button:disabled {
+  border-style: dashed;
+}
+
+.number-button[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--warn-bg);
+}
+
+/* ---- Reveal ---------------------------------------------------------------- */
+
+/* Stays reachable while the cards pile up. */
+.button.reveal-button {
+  position: sticky;
+  top: 8px;
+  z-index: 5;
+}
+
+.reveal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card.reveal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: pop-in 0.4s ease-out;
+}
+
+.card.reveal-card.truth {
+  border: 3px solid var(--good);
+}
+
+.reveal-card .answer-text {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.voters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.voter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  animation: pop-in 0.35s ease-out backwards;
+}
+
+.written-by {
+  font-weight: 700;
+  animation: pop-in 0.35s ease-out;
+}
+
+.stamp {
+  align-self: center;
+  padding: 2px 16px;
+  border: 4px double var(--good);
+  border-radius: 8px;
+  color: var(--good);
+  font-family: var(--font-hand);
+  font-size: 2.1rem;
+  font-weight: 600;
+  transform: rotate(-4deg);
+  animation: stamp 0.5s ease-in backwards;
+}
+
+.gained {
+  margin-left: auto;
+  font-family: var(--font-hand);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.walter-history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.walter-history li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.walter-history .walter-gap {
+  letter-spacing: 0;
+}
+
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: rotate(-4deg) scale(2.6);
+  }
+}

@@ -1,7 +1,7 @@
 # Party Games
 
 Browser party games: one person creates a room, everyone else joins with their phone by QR code or
-5-character code. Games: **Just One**, **Imposter** and **Wavelength**. The UI is in German (Swiss spelling).
+5-character code. Games: **Just One**, **Imposter**, **Wavelength** and **Der wahre Walter**. The UI is in German (Swiss spelling).
 
 Vite + React + TypeScript, Supabase (Postgres, Realtime, anonymous sign-ins), GitHub Pages.
 
@@ -84,7 +84,8 @@ Presence or the cleanup schedule.
   the word until the round is over, and sees only surviving clues once guessing starts. No client can
   read the deck. In Imposter, players can only ever read their own role, and votes are secret until
   everyone has voted. In Wavelength, only the clue-giver can read the target before the reveal, and
-  individual guesses are secret until everyone has submitted.
+  individual guesses are secret until everyone has submitted. In Der wahre Walter, players can only
+  read their own answer until it is revealed; the Sphinx gets the texts without the authors.
 - **Live updates:** only the `rooms` table is published. Each change bumps `rooms.version`, and
   clients re-fetch what they are allowed to see. As a fallback they also re-fetch every 8 seconds.
 - **Presence** shows who is online. Host takeover is checked by the database using heartbeats
@@ -131,6 +132,26 @@ Presence or the cleanup schedule.
 While the shared dial is dragged, its position is previewed to others with Realtime **Broadcast**
 (about 8 messages per second). Only the position at release is saved. The preview is cosmetic: anyone
 who knew the room's internal ID could send fake movements, but couldn't change the saved dial.
+
+### Der wahre Walter rules
+
+- 3–10 players. Everyone is the Sphinx equally often: twice with 3–5 players, once with 6–10.
+- The Sphinx picks one of three sentences and answers truthfully. The others write fakes. Answers stay
+  as typed.
+- The Sphinx's answer is then locked. Only the Sphinx sees all answers, can practise and shuffle
+  them, and reads them aloud with their numbers. Others vote by number.
+- You can't vote for your own answer, unless somebody wrote the same.
+- Answers match if they differ only in capitals, punctuation and spaces.
+- Points: 1 for picking the truth; 1 per vote on your fake; the Sphinx gets 1 per correct vote.
+  Everyone who wrote one of several matching answers gets nothing for it (the truth included).
+- With 4 or more players, the Sphinx gets nothing if every vote finds the truth. (The original
+  rulebook has this for any number; it also penalizes revealing reading, which is left to the group.)
+- Reveal order: fakes with votes (fewest first), the truth, then fakes without votes.
+- The host can go on without people who are offline, or replace a round before the reveal. New players
+  can join between rounds. If the Sphinx leaves before the reveal, the round is replaced. Below 3
+  players the game ends.
+
+The game idea is by Urs Hostettler (Fata Morgana Spiele). Sentences and artwork here are our own.
 
 ## Adding a game
 

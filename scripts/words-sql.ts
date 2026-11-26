@@ -1,5 +1,6 @@
 import { CATEGORIES_DE } from '../src/games/imposter/words.de.ts'
 import { ALL_WORDS_DE } from '../src/games/just-one/words.de.ts'
+import { SENTENCES_DE } from '../src/games/walter/sentences.de.ts'
 import { PAIRS_DE } from '../src/games/wavelength/pairs.de.ts'
 
 const quote = (text: string) => `'${text.replaceAll("'", "''")}'`
@@ -42,9 +43,22 @@ export function wavelengthPairsSql(): string {
   ].join('\n')
 }
 
+/** The same for the sentences of "Der wahre Walter". */
+export function walterSentencesSql(): string {
+  const rows = SENTENCES_DE.map((text) => `  (${quote(text)})`).join(',\n')
+  return [
+    '-- Generated from src/games/walter/sentences.de.ts by `npm run words`. Do not edit.',
+    'delete from private.walter_sentences;',
+    'insert into private.walter_sentences (sentence) values',
+    `${rows};`,
+    '',
+  ].join('\n')
+}
+
 /** Migration name suffix -> SQL */
 export const WORD_MIGRATIONS = {
   just_one_words: justOneWordsSql,
   imposter_words: imposterWordsSql,
   wavelength_pairs: wavelengthPairsSql,
+  walter_sentences: walterSentencesSql,
 }

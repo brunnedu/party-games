@@ -1,7 +1,8 @@
-import type { Player } from '../../core/room/api'
-import { Avatar } from '../../core/ui/Avatar'
-import { t } from '../../core/strings.de'
+import type { Player } from '../room/api'
+import { t } from '../strings.de'
+import { Avatar } from './Avatar'
 import { ranking } from './ranking'
+import './game.css'
 
 export function Scoreboard({
   players,

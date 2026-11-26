@@ -88,7 +88,7 @@
   text-decoration: line-through;
 }
 
-/* ---- Speaking order, voting, scores -------------------------------------- */
+/* ---- Speaking order and voting -------------------------------------- */
 
 .speaking-order {
   list-style: none;
@@ -136,16 +136,4 @@
 .vote-option[aria-pressed='true'] {
   border-color: var(--accent);
   background: var(--warn-bg);
-}
-
-.scoreboard .rank {
-  min-width: 1.6rem;
-  color: var(--muted);
-}
-
-.scoreboard .score {
-  margin-left: auto;
-  font-family: var(--font-hand);
-  font-size: 1.8rem;
-  line-height: 1;
 }
