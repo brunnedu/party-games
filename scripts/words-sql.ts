@@ -1,5 +1,6 @@
 import { CATEGORIES_DE } from '../src/games/imposter/words.de.ts'
 import { ALL_WORDS_DE } from '../src/games/just-one/words.de.ts'
+import { PAIRS_DE } from '../src/games/wavelength/pairs.de.ts'
 
 const quote = (text: string) => `'${text.replaceAll("'", "''")}'`
 
@@ -29,8 +30,21 @@ export function imposterWordsSql(): string {
   ].join('\n')
 }
 
+/** The same for the Wavelength scales. */
+export function wavelengthPairsSql(): string {
+  const rows = PAIRS_DE.map(([l, r]) => `  (${quote(l)}, ${quote(r)})`).join(',\n')
+  return [
+    '-- Generated from src/games/wavelength/pairs.de.ts by `npm run words`. Do not edit.',
+    'delete from private.wavelength_pairs;',
+    'insert into private.wavelength_pairs (left_label, right_label) values',
+    `${rows};`,
+    '',
+  ].join('\n')
+}
+
 /** Migration name suffix -> SQL */
 export const WORD_MIGRATIONS = {
   just_one_words: justOneWordsSql,
   imposter_words: imposterWordsSql,
+  wavelength_pairs: wavelengthPairsSql,
 }

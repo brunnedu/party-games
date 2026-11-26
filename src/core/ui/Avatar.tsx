@@ -17,6 +17,12 @@ const AVATARS: readonly [animal: string, color: string][] = [
   ['🦀', '#ee9682'],
 ]
 
+export function avatarFor(player: Player | undefined): { icon: string; color?: string } {
+  if (!player) return { icon: '👤' }
+  const [icon, color] = AVATARS[(player.seat_order - 1) % AVATARS.length]!
+  return { icon, color }
+}
+
 export function Avatar({
   player,
   small,
@@ -29,13 +35,11 @@ export function Avatar({
   offline?: boolean
   checked?: boolean
 }) {
-  const [animal, color] = player
-    ? AVATARS[(player.seat_order - 1) % AVATARS.length]!
-    : ['👤', undefined]
+  const { icon, color } = avatarFor(player)
   const classes = ['avatar', small && 'small', offline && 'offline'].filter(Boolean).join(' ')
   return (
     <span className={classes} style={{ '--avatar-color': color } as CSSProperties} aria-hidden>
-      {animal}
+      {icon}
       {checked && <span className="avatar-badge">✓</span>}
     </span>
   )

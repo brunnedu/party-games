@@ -1,7 +1,7 @@
 # Party Games
 
 Browser party games: one person creates a room, everyone else joins with their phone by QR code or
-5-character code. Games: **Just One** and **Imposter**. The UI is in German (Swiss spelling).
+5-character code. Games: **Just One**, **Imposter** and **Wavelength**. The UI is in German (Swiss spelling).
 
 Vite + React + TypeScript, Supabase (Postgres, Realtime, anonymous sign-ins), GitHub Pages.
 
@@ -83,7 +83,8 @@ Presence or the cleanup schedule.
 - **Secrets are protected by Row Level Security**, not by the UI. In Just One, the guesser can't read
   the word until the round is over, and sees only surviving clues once guessing starts. No client can
   read the deck. In Imposter, players can only ever read their own role, and votes are secret until
-  everyone has voted.
+  everyone has voted. In Wavelength, only the clue-giver can read the target before the reveal, and
+  individual guesses are secret until everyone has submitted.
 - **Live updates:** only the `rooms` table is published. Each change bumps `rooms.version`, and
   clients re-fetch what they are allowed to see. As a fallback they also re-fetch every 8 seconds.
 - **Presence** shows who is online. Host takeover is checked by the database using heartbeats
@@ -113,6 +114,23 @@ Presence or the cleanup schedule.
   guessing wrong, everyone else gets 1.
 - The host ends the game. New players can join between rounds.
 - If the imposter leaves, the round is cancelled. Below 3 players the game ends.
+
+### Wavelength rules
+
+- 2–10 players, cooperative. Everyone gives the same number of clues: 3 each with 2–3 players, 2 with
+  4–6, 1 with 7–10. The number of rounds is fixed when the game starts.
+- The clue-giver holds a button to see the target. Typing the clue is optional.
+- For each round, the clue-giver picks **shared** (one dial; all must confirm, moving it resets
+  confirmations) or **individual** (secret guesses; the round is worth the average of their points).
+- Distance from the target on a scale of 0–100: up to 4 earns 4 points, up to 11 earns 3, up to 18
+  earns 2.
+- The host can reveal without people who are offline, or replace a round (it doesn't count). New
+  players can join between rounds.
+- If the clue-giver leaves, the round is replaced. Below 2 players the game ends.
+
+While the shared dial is dragged, its position is previewed to others with Realtime **Broadcast**
+(about 8 messages per second). Only the position at release is saved. The preview is cosmetic: anyone
+who knew the room's internal ID could send fake movements, but couldn't change the saved dial.
 
 ## Adding a game
 

@@ -1,0 +1,162 @@
+.card.scale {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+}
+
+.dial {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.dial.interactive {
+  cursor: grab;
+  /* Dragging the needle must not scroll the page or select text. */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.dial.interactive:active {
+  cursor: grabbing;
+}
+
+.dial-face {
+  fill: #efe3c2;
+  stroke: var(--text);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.dial-tick {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.zone {
+  stroke: var(--text);
+  stroke-width: 0.8;
+}
+
+.zone-2 {
+  fill: #f2c14e;
+}
+
+.zone-3 {
+  fill: #e8824a;
+}
+
+.zone-4 {
+  fill: #4f86a8;
+}
+
+.zone-label,
+.marker-icon {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.zone-label {
+  font-size: 7px;
+  font-weight: 700;
+  fill: #1f170c;
+}
+
+.marker-icon {
+  font-size: 9px;
+}
+
+.marker {
+  animation: marker-in 0.4s ease-out 1.2s backwards;
+}
+
+.needle line {
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.needle-grip {
+  fill: var(--accent);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.dial-hub {
+  fill: var(--surface);
+  stroke: var(--text);
+  stroke-width: 2.5;
+}
+
+/* At the reveal, a cover swings away. Without animation it is simply gone. */
+.dial-cover {
+  fill: #cdb98c;
+  stroke: var(--text);
+  stroke-width: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 100px 100px;
+  transform: rotate(180deg);
+  animation: uncover 1.2s ease-in-out;
+}
+
+.scale-ends {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.scale-end {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.scale-end:last-child {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.guess-points,
+.history-points {
+  margin-left: auto;
+}
+
+.history-round {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.history-points {
+  font-family: var(--font-hand);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+@keyframes uncover {
+  0% {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  85% {
+    opacity: 1;
+  }
+}
+
+@keyframes marker-in {
+  from {
+    opacity: 0;
+  }
+}
