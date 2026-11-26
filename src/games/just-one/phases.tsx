@@ -1,9 +1,10 @@
 // One component per phase of a round.
-import { useState, type CSSProperties, type FormEvent, type ReactNode } from 'react'
+import { useState, type CSSProperties, type FormEvent } from 'react'
 import type { Player } from '../../core/room/api'
 import { Avatar } from '../../core/ui/Avatar'
 import type { Clue, RoundActions, Snapshot } from './api'
-import { Confetti } from './Confetti'
+import { Confetti } from '../../core/ui/Confetti'
+import { AvatarProgress, Waiting } from '../../core/ui/Waiting'
 import { s } from './strings.de'
 
 export interface PhaseProps {
@@ -17,17 +18,6 @@ export interface PhaseProps {
   actions: RoundActions
   busy: boolean
   run: (action: () => Promise<unknown>) => void
-}
-
-function Waiting({ children }: { children: ReactNode }) {
-  return (
-    <section className="card center waiting">
-      <span className="waiting-icon" aria-hidden>
-        ✏️
-      </span>
-      <p className="muted">{children}</p>
-    </section>
-  )
 }
 
 function SecretWord({ word }: { word: string }) {
@@ -103,17 +93,7 @@ function Progress({ snapshot, userId, playerIds, nameOf, playerOf }: PhaseProps)
   const missing = givers.filter((id) => !submitted_ids.includes(id) && id !== userId)
   return (
     <>
-      <ul className="givers">
-        {givers.map((id) => {
-          const done = submitted_ids.includes(id)
-          return (
-            <li key={id} className={done ? 'giver done' : 'giver'}>
-              <Avatar player={playerOf(id)} checked={done} />
-              {nameOf(id)}
-            </li>
-          )
-        })}
-      </ul>
+      <AvatarProgress ids={givers} doneIds={submitted_ids} playerOf={playerOf} />
       <p className="muted center" aria-live="polite">
         {s.progress(submitted_ids.length, givers.length)}
         {missing.length > 0 && (

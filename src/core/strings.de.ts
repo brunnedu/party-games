@@ -42,7 +42,9 @@ export const t = {
   errors: {
     room_not_found: 'Diesen Raum gibt es nicht.',
     room_full: 'Der Raum ist voll.',
-    game_running: 'Das Spiel läuft schon. Warte, bis es fertig ist.',
+    game_running: 'Das Spiel läuft schon. Versuche es später nochmal.',
+    invalid_vote: 'Für diese Person kannst du nicht stimmen.',
+    no_votes_yet: 'Es gibt noch keine Stimme.',
     name_taken: 'Dieser Name ist im Raum schon vergeben.',
     invalid_name: 'Bitte gib einen Namen mit 1 bis 20 Zeichen ein.',
     kicked: 'Du wurdest aus diesem Raum entfernt.',
@@ -57,7 +59,7 @@ export const t = {
     invalid_guess: 'Die Antwort muss 1 bis 40 Zeichen lang sein.',
     no_clues_yet: 'Es gibt noch keinen Hinweis.',
     players_still_here:
-      'Die fehlenden Personen sind noch online. Weil du rätst, kannst du erst weiter, wenn sie offline sind.',
+      'Das geht erst, wenn die fehlenden Personen offline sind (und du selbst alles erledigt hast).',
     unknown: 'Etwas ist schiefgelaufen. Prüfe deine Verbindung und versuche es nochmal.',
   },
 }

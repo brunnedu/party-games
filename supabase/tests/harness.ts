@@ -49,9 +49,9 @@ export async function createDatabase() {
 export type TestDb = Awaited<ReturnType<typeof createDatabase>>
 
 /** Creates a room with n players; the first one is the host. */
-export async function createRoom(t: TestDb, n: number) {
+export async function createRoom(t: TestDb, n: number, gameType = 'just-one') {
   const users = Array.from({ length: n }, () => randomUUID())
-  const code = await t.call<string>(users[0]!, 'create_room', 'just-one', 'Spieler 1')
+  const code = await t.call<string>(users[0]!, 'create_room', gameType, 'Spieler 1')
   let roomId = ''
   for (let i = 1; i < n; i++) {
     roomId = await t.call<string>(users[i]!, 'join_room', code, `Spieler ${i + 1}`)

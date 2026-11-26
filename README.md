@@ -1,7 +1,7 @@
 # Party Games
 
 Browser party games: one person creates a room, everyone else joins with their phone by QR code or
-5-character code. First game: **Just One**. The UI is in German (Swiss spelling).
+5-character code. Games: **Just One** and **Imposter**. The UI is in German (Swiss spelling).
 
 Vite + React + TypeScript, Supabase (Postgres, Realtime, anonymous sign-ins), GitHub Pages.
 
@@ -23,7 +23,11 @@ Needs Node.js 22.18 or newer.
    ```
 
 Do **not** add the `private` schema to the exposed schemas in the API settings. It holds the card
-decks.
+decks and word lists.
+
+**Updating an existing project:** the deploy workflow does not touch the database. When new files
+appear in `supabase/migrations/`, run just those (in filename order) **before** pushing the code that
+needs them.
 
 ### 2. Run locally
 
@@ -66,7 +70,7 @@ If you rename the repository, change `base` in [`vite.config.ts`](vite.config.ts
 | `npm run dev` | Development server |
 | `npm test` | Database rules and security tests |
 | `npm run build` | Type check and production build |
-| `npm run words` | New migration after editing the Just One word list |
+| `npm run words` | New migration after editing a word list |
 
 `npm test` runs the real migrations in [PGlite](https://pglite.dev) (embedded Postgres) with a
 small stand-in for Supabase's auth. It needs no Supabase project. It does not cover Realtime,
@@ -76,9 +80,10 @@ Presence or the cleanup schedule.
 
 - **The database is the referee.** Clients can only read. Every change goes through a Postgres
   function that checks who is calling and which phase the game is in.
-- **Secrets are protected by Row Level Security**, not by the UI. The guesser can't read the word
-  until the round is over, and sees only surviving clues once guessing starts. No client can read
-  the deck.
+- **Secrets are protected by Row Level Security**, not by the UI. In Just One, the guesser can't read
+  the word until the round is over, and sees only surviving clues once guessing starts. No client can
+  read the deck. In Imposter, players can only ever read their own role, and votes are secret until
+  everyone has voted.
 - **Live updates:** only the `rooms` table is published. Each change bumps `rooms.version`, and
   clients re-fetch what they are allowed to see. As a fallback they also re-fetch every 8 seconds.
 - **Presence** shows who is online. Host takeover is checked by the database using heartbeats
@@ -88,7 +93,7 @@ Presence or the cleanup schedule.
 - Rooms idle for 24 hours are deleted. Free Supabase projects pause after 7 days without activity;
   resume them in the dashboard.
 
-### House rules
+### Just One house rules
 
 - 3–10 players. Players can only join in the lobby.
 - Skipping an unknown word (before any clues) costs no card.
@@ -96,6 +101,18 @@ Presence or the cleanup schedule.
   more; the host (if giving clues) or a majority confirms.
 - A wrong guess also loses the next card. On the last card, it costs one point instead.
 - If the guesser leaves, the round is replayed with the next player. Below 3 players the game ends.
+
+### Imposter rules
+
+- 3–10 players (best with 4 or more), always one imposter.
+- Everyone sees 16 words of one category. All but the imposter know the secret one. Hold the card to
+  see your role.
+- Hints are said out loud, in the order shown. The host opens the vote.
+- Everyone votes for someone else. A tie leads to one run-off; another tie lets the imposter escape.
+- Points: escaped, the imposter gets 2. Caught but guessing the word, the imposter gets 1. Caught and
+  guessing wrong, everyone else gets 1.
+- The host ends the game. New players can join between rounds.
+- If the imposter leaves, the round is cancelled. Below 3 players the game ends.
 
 ## Adding a game
 
@@ -111,10 +128,12 @@ Presence or the cleanup schedule.
    - changes data only in `security definer` functions that use `private.lock_room` and call
      `private.touch` afterwards. Set the room to `finished` when the game ends,
    - handles players leaving mid-game (trigger on `players`; see `just_one_player_removed`),
+   - optionally sets `rooms.open_to_join` while it is safe for new players to join,
    - revokes `execute` from `public, anon` on new functions and grants it to `authenticated`.
 4. Add tests in `supabase/tests/`.
 
-The hub, lobby, QR code, joining, reconnecting, Presence and host transfer come for free.
+The hub, lobby, QR code, joining, reconnecting, Presence and host transfer come for free. Shared
+game building blocks (waiting screens, avatars, confetti, styles) are in `src/core/ui/`.
 
 ## Possible next steps
 

@@ -68,7 +68,7 @@ function JoinGate({ code, onJoined }: { code: string; onJoined: () => Promise<vo
   const { data: info, error } = useQuery(() => roomApi.info(code), code)
   if (info === undefined) return <Notice>{error ? errorText(error) : t.loading}</Notice>
   if (info === null) return <Notice>{t.errors.room_not_found}</Notice>
-  if (info.status !== 'lobby') return <Notice>{t.errors.game_running}</Notice>
+  if (!info.joinable) return <Notice>{t.errors.game_running}</Notice>
   return (
     <Page title={t.joinRoomTitle(code)}>
       <JoinForm

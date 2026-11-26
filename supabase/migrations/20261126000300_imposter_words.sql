@@ -1,0 +1,28 @@
+-- Generated from src/games/imposter/words.de.ts by `npm run words`. Do not edit.
+delete from private.imposter_categories;
+insert into private.imposter_categories (name, words) values
+  ('Tiere', array['Hund', 'Katze', 'Pferd', 'Elefant', 'Pinguin', 'Hai', 'Adler', 'Schlange', 'Affe', 'Löwe', 'Frosch', 'Biene', 'Schildkröte', 'Känguru', 'Wal', 'Igel']),
+  ('Essen', array['Pizza', 'Spaghetti', 'Sushi', 'Fondue', 'Raclette', 'Rösti', 'Burger', 'Salat', 'Suppe', 'Lasagne', 'Curry', 'Bratwurst', 'Omelette', 'Müesli', 'Pommes frites', 'Risotto']),
+  ('Früchte und Gemüse', array['Apfel', 'Banane', 'Erdbeere', 'Ananas', 'Zitrone', 'Wassermelone', 'Kirsche', 'Traube', 'Karotte', 'Tomate', 'Gurke', 'Kartoffel', 'Zwiebel', 'Brokkoli', 'Kürbis', 'Avocado']),
+  ('Süsses', array['Schokolade', 'Glace', 'Gummibärli', 'Kuchen', 'Torte', 'Guetzli', 'Bonbon', 'Lollipop', 'Kaugummi', 'Meringue', 'Crêpe', 'Waffel', 'Marshmallow', 'Lakritze', 'Pudding', 'Zuckerwatte']),
+  ('Getränke', array['Wasser', 'Kaffee', 'Tee', 'Milch', 'Bier', 'Wein', 'Orangensaft', 'Cola', 'Eistee', 'Kakao', 'Champagner', 'Glühwein', 'Sirup', 'Smoothie', 'Rivella', 'Whisky']),
+  ('Sport', array['Fussball', 'Tennis', 'Skifahren', 'Schwimmen', 'Boxen', 'Golf', 'Basketball', 'Klettern', 'Eishockey', 'Reiten', 'Surfen', 'Yoga', 'Schwingen', 'Fechten', 'Marathon', 'Bowling']),
+  ('Berufe', array['Arzt', 'Lehrer', 'Polizist', 'Koch', 'Pilot', 'Bauer', 'Coiffeur', 'Feuerwehrmann', 'Richter', 'Bäcker', 'Gärtner', 'Zahnarzt', 'Schauspieler', 'Programmierer', 'Pöstler', 'Astronaut']),
+  ('Orte in der Stadt', array['Bahnhof', 'Spital', 'Schule', 'Bibliothek', 'Kino', 'Museum', 'Restaurant', 'Supermarkt', 'Park', 'Kirche', 'Bank', 'Post', 'Schwimmbad', 'Polizeiposten', 'Flughafen', 'Fitnesscenter']),
+  ('Länder', array['Schweiz', 'Italien', 'Frankreich', 'Deutschland', 'Spanien', 'Japan', 'China', 'Indien', 'Brasilien', 'Kanada', 'Australien', 'Ägypten', 'Griechenland', 'Schweden', 'Mexiko', 'Island']),
+  ('Städte der Welt', array['Paris', 'London', 'Rom', 'New York', 'Tokio', 'Berlin', 'Wien', 'Venedig', 'Amsterdam', 'Dubai', 'Sydney', 'Barcelona', 'Moskau', 'Las Vegas', 'Kairo', 'Rio de Janeiro']),
+  ('Reiseziele in der Schweiz', array['Zürich', 'Bern', 'Basel', 'Genf', 'Luzern', 'Lugano', 'Zermatt', 'Davos', 'Interlaken', 'St. Moritz', 'Locarno', 'Jungfraujoch', 'Rheinfall', 'Rigi', 'St. Gallen', 'Chur']),
+  ('Fahrzeuge', array['Auto', 'Velo', 'Zug', 'Tram', 'Bus', 'Flugzeug', 'Helikopter', 'U-Boot', 'Motorrad', 'Traktor', 'Segelschiff', 'Rakete', 'Trottinett', 'Seilbahn', 'Heissluftballon', 'Lastwagen']),
+  ('Haushalt', array['Kühlschrank', 'Staubsauger', 'Waschmaschine', 'Toaster', 'Bügeleisen', 'Föhn', 'Backofen', 'Mixer', 'Besen', 'Wecker', 'Lampe', 'Spiegel', 'Fernseher', 'Zahnbürste', 'Pfanne', 'Korkenzieher']),
+  ('Möbel', array['Tisch', 'Stuhl', 'Sofa', 'Bett', 'Schrank', 'Regal', 'Sessel', 'Hocker', 'Kommode', 'Schreibtisch', 'Garderobe', 'Liegestuhl', 'Hängematte', 'Wiege', 'Bank', 'Vitrine']),
+  ('Kleidung', array['Hose', 'Pullover', 'Jacke', 'Socken', 'Schuhe', 'Mütze', 'Schal', 'Handschuhe', 'Krawatte', 'Badehose', 'Pyjama', 'Gürtel', 'Rock', 'Stiefel', 'Flipflops', 'Anzug']),
+  ('Musikinstrumente', array['Gitarre', 'Klavier', 'Geige', 'Schlagzeug', 'Flöte', 'Trompete', 'Saxophon', 'Harfe', 'Akkordeon', 'Alphorn', 'Mundharmonika', 'Orgel', 'Cello', 'Dudelsack', 'Triangel', 'Ukulele']),
+  ('Natur', array['Berg', 'See', 'Fluss', 'Wald', 'Wüste', 'Insel', 'Vulkan', 'Gletscher', 'Höhle', 'Wasserfall', 'Strand', 'Wiese', 'Meer', 'Dschungel', 'Sumpf', 'Schlucht']),
+  ('Wetter und Himmel', array['Sonne', 'Mond', 'Stern', 'Regen', 'Schnee', 'Hagel', 'Nebel', 'Gewitter', 'Blitz', 'Regenbogen', 'Wolke', 'Sturm', 'Föhn', 'Komet', 'Polarlicht', 'Frost']),
+  ('Körper', array['Auge', 'Ohr', 'Nase', 'Mund', 'Zahn', 'Zunge', 'Haar', 'Hand', 'Fuss', 'Knie', 'Ellbogen', 'Herz', 'Gehirn', 'Magen', 'Bauchnabel', 'Daumen']),
+  ('Feste und Anlässe', array['Weihnachten', 'Ostern', 'Geburtstag', 'Hochzeit', 'Silvester', 'Fasnacht', 'Halloween', '1. August', 'Samichlaus', 'Valentinstag', 'Muttertag', 'Taufe', 'Beerdigung', 'Schulabschluss', 'Sechseläuten', 'Openair']),
+  ('Freizeit', array['Wandern', 'Campen', 'Kochen', 'Lesen', 'Gärtnern', 'Angeln', 'Tanzen', 'Malen', 'Fotografieren', 'Gamen', 'Basteln', 'Singen', 'Shoppen', 'Grillieren', 'Puzzeln', 'Stricken']),
+  ('Märchen und Fantasie', array['Drache', 'Einhorn', 'Hexe', 'Zauberer', 'Vampir', 'Gespenst', 'Zwerg', 'Riese', 'Meerjungfrau', 'Werwolf', 'Fee', 'Zombie', 'Prinzessin', 'Ritter', 'Troll', 'Mumie']),
+  ('Schule', array['Wandtafel', 'Schulsack', 'Lineal', 'Schere', 'Leim', 'Füller', 'Radiergummi', 'Zirkel', 'Taschenrechner', 'Znüni', 'Pause', 'Prüfung', 'Hausaufgaben', 'Zeugnis', 'Turnhalle', 'Stundenplan']),
+  ('Ferien und Reisen', array['Koffer', 'Reisepass', 'Zelt', 'Hotel', 'Sonnencreme', 'Postkarte', 'Souvenir', 'Landkarte', 'Rucksack', 'Kreuzfahrt', 'Liegestuhl', 'Flugticket', 'Stau', 'Jetlag', 'Kamera', 'Badetuch']),
+  ('Technik', array['Computer', 'Handy', 'Kopfhörer', 'Drucker', 'Maus', 'Tastatur', 'Bildschirm', 'Roboter', 'Drohne', 'Ladekabel', 'Lautsprecher', 'Smartwatch', 'Router', 'Spielkonsole', 'Batterie', 'Mikrofon']);

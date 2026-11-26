@@ -1,0 +1,160 @@
+/* ---- Hold-to-reveal role card -------------------------------------------- */
+
+.card.role-card {
+  width: 100%;
+  /* Same size hidden and revealed, so a glance gives nothing away. */
+  height: 11rem;
+  justify-content: center;
+  gap: 6px;
+  /* Holding must not select text, open menus or scroll the page. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+
+.role-card > * {
+  pointer-events: none;
+}
+
+.role-card-icon {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.role-card-word {
+  font-family: var(--font-hand);
+  font-size: clamp(2.4rem, 11vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.role-card-word.imposter {
+  color: var(--bad);
+}
+
+/* ---- Word grid ------------------------------------------------------------ */
+
+.word-grid-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.word-grid-label {
+  font-size: 1.3rem;
+}
+
+.word-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (min-width: 440px) {
+  .word-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.word-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 46px;
+  padding: 6px 4px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.word-tile.selected-tile {
+  border-color: var(--text);
+  background: var(--warn-bg);
+}
+
+.word-tile.secret-tile {
+  border-color: var(--good);
+  background: var(--good);
+  color: #fff;
+}
+
+.word-tile.wrong-tile {
+  border-color: var(--bad);
+  color: var(--bad);
+  text-decoration: line-through;
+}
+
+/* ---- Speaking order, voting, scores -------------------------------------- */
+
+.speaking-order {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.speaking-order li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+}
+
+.speaking-order li.me {
+  background: var(--warn-bg);
+}
+
+.vote-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.vote-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  text-align: left;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.vote-option[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--warn-bg);
+}
+
+.scoreboard .rank {
+  min-width: 1.6rem;
+  color: var(--muted);
+}
+
+.scoreboard .score {
+  margin-left: auto;
+  font-family: var(--font-hand);
+  font-size: 1.8rem;
+  line-height: 1;
+}

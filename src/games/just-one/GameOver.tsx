@@ -1,7 +1,7 @@
 import type { Snapshot } from './api'
 import { CardProgress } from './CardProgress'
 import { cardSlots } from './cardSlots'
-import { Confetti } from './Confetti'
+import { Confetti } from '../../core/ui/Confetti'
 import { s } from './strings.de'
 
 const ICONS = { correct: '✅', wrong: '❌', pass: '⏭️' }

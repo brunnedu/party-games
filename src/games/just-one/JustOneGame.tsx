@@ -21,6 +21,7 @@ import {
   type PhaseProps,
 } from './phases'
 import { s } from './strings.de'
+import '../../core/ui/game.css'
 import './just-one.css'
 
 const PHASES: Record<Exclude<Phase, 'game_over'>, ComponentType<PhaseProps>> = {
@@ -102,7 +103,7 @@ export function JustOneGame({ room, players, userId, online, refresh }: GameView
           <span>{s.card(game.cards_used + 1, game.cards_total)}</span>
           <strong>{s.score(game.score)}</strong>
           <CardProgress slots={cardSlots(game, snapshot.history)} />
-          <div className={isGuesser ? 'role guesser' : 'role'}>
+          <div className={isGuesser ? 'role highlight' : 'role'}>
             <Avatar player={playerOf(game.guesser_id)} />
             {isGuesser ? s.youGuess : s.isGuessing(nameOf(game.guesser_id))}
           </div>

@@ -20,6 +20,14 @@ export interface RoomSnapshot {
   players: Player[]
 }
 
+/** What anyone with the code may know about a room. */
+export interface RoomInfo {
+  game_type: string
+  status: Room['status']
+  /** In the lobby, and between rounds for games that allow it. */
+  joinable: boolean
+}
+
 export const CODE_LENGTH = 5
 
 export const roomApi = {
@@ -27,9 +35,7 @@ export const roomApi = {
     rpc<string>('create_room', { p_game_type: gameType, p_name: name }),
   join: (code: string, name: string) => rpc<string>('join_room', { p_code: code, p_name: name }),
   info: async (code: string) => {
-    const rows = await rpc<{ game_type: string; status: Room['status'] }[]>('get_room_info', {
-      p_code: code,
-    })
+    const rows = await rpc<RoomInfo[]>('get_room_info', { p_code: code })
     return rows[0] ?? null
   },
   snapshot: (code: string) => rpc<RoomSnapshot | null>('room_snapshot', { p_code: code }),
