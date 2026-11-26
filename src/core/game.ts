@@ -30,6 +30,8 @@ export interface GameDefinition {
   maxPlayers: number
   /** Starts the game for a room (host only). */
   start: (roomId: string) => Promise<unknown>
+  /** Optional extra card in the lobby, e.g. for settings the host chooses. */
+  LobbySettings?: ComponentType<GameViewProps>
   /** Shown while the room is "playing" or "finished". */
   View: ComponentType<GameViewProps>
 }

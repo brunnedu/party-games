@@ -49,6 +49,16 @@ export function Lobby({
         </button>
       </section>
 
+      {game.LobbySettings && (
+        <game.LobbySettings
+          room={room}
+          players={players}
+          userId={userId}
+          online={online}
+          refresh={refresh}
+        />
+      )}
+
       <section className="card stack">
         <h2>{t.playersInRoom(players.length)}</h2>
         <PlayerList

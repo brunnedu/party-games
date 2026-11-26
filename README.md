@@ -1,7 +1,7 @@
 # Party Games
 
 Browser party games: one person creates a room, everyone else joins with their phone by QR code or
-5-character code. Games: **Just One**, **Imposter**, **Wavelength** and **Der wahre Walter**. The UI is in German (Swiss spelling).
+5-character code. Games: **Just One**, **Imposter**, **Wavelength**, **Der wahre Walter** and **Liar's Dice**. The UI is in German (Swiss spelling).
 
 Vite + React + TypeScript, Supabase (Postgres, Realtime, anonymous sign-ins), GitHub Pages.
 
@@ -153,6 +153,19 @@ who knew the room's internal ID could send fake movements, but couldn't change t
 
 The game idea is by Urs Hostettler (Fata Morgana Spiele). Sentences and artwork here are our own.
 
+### Liar's Dice rules
+
+- 2–10 players. The host sets the seating order and 1–6 starting dice (default 5) in the lobby.
+- Bids are spoken: "at least N of a number". Each bid needs more dice, or the same count of a higher
+  number. Ones are not wild. There is no "exactly" call.
+- On a turn, a player may instead doubt the previous bid (button with confirmation; the first one
+  counts). All dice are revealed with a count per number.
+- The doubter (or the host) picks who loses a die and can change it until the next round starts.
+- The loser starts the next round; if out, the next player does. The last player with dice wins.
+- Dice are rolled by the database; others' dice are unreadable until a doubt.
+- The host can reroll a round without penalty. Leaving removes your dice and rerolls the round. Nobody
+  can join a running game.
+
 ## Adding a game
 
 1. Create `src/games/<id>/` with the game's components, its text file (`strings.de.ts`) and a drawn
@@ -171,7 +184,8 @@ The game idea is by Urs Hostettler (Fata Morgana Spiele). Sentences and artwork 
    - revokes `execute` from `public, anon` on new functions and grants it to `authenticated`.
 4. Add tests in `supabase/tests/`.
 
-The hub, lobby, QR code, joining, reconnecting, Presence and host transfer come for free. Shared
+A game with settings in the lobby adds a `LobbySettings` component to its definition. The hub, lobby,
+QR code, joining, reconnecting, Presence and host transfer come for free. Shared
 game building blocks (waiting screens, avatars, confetti, styles) are in `src/core/ui/`.
 
 ## Possible next steps
