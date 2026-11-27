@@ -51,10 +51,14 @@ export const s = {
   writerCount: (name: string, n: number) => `${name} (${n})`,
   missing: (names: string) => `Noch ohne Wörter: ${names}`,
   startPlaying: 'Alle fertig, losspielen',
-  confirmPlay: (n: number, missing: string) =>
-    `Mit ${n === 1 ? '1 Wort' : `${n} Wörtern`} losspielen?Danach kann niemand mehr Wörter eingeben.` +
-    (missing ? ` Noch ohne Wörter: ${missing}.` : '') +
-    ' Auch an geteilten Handys sollten alle fertig sein.',
+  confirmPlay: (n: number, missing: string) => ({
+    title: `Mit ${n === 1 ? '1 Wort' : `${n} Wörtern`} losspielen?`,
+    text:
+      'Danach kann niemand mehr Wörter eingeben.' +
+      (missing ? ` Noch ohne Wörter: ${missing}.` : '') +
+      ' Auch an geteilten Handys sollten alle fertig sein.',
+    confirmLabel: 'Losspielen',
+  }),
   waitingForPlay: 'Der Host startet, wenn alle fertig sind.',
 
   passFirst: 'Gebt das Handy an jemanden von',
@@ -104,5 +108,9 @@ export const s = {
   hostTools: 'Host-Werkzeuge',
   changePhoneHelp: 'Beim Wechsel wird eine laufende Zeit pausiert.',
   abort: 'Spiel abbrechen',
-  confirmAbort: 'Spiel wirklich abbrechen? Alle Wörter und Punkte gehen verloren.',
+  confirmAbort: {
+    title: 'Spiel abbrechen?',
+    text: 'Alle kehren zur Lobby zurück. Alle Wörter und Punkte gehen verloren.',
+    confirmLabel: 'Spiel abbrechen',
+  },
 }

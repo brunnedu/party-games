@@ -3,6 +3,7 @@ import { useState, type CSSProperties, type FormEvent } from 'react'
 import type { Player } from '../../core/room/api'
 import { Avatar } from '../../core/ui/Avatar'
 import type { Clue, RoundActions, Snapshot } from './api'
+import { useConfirm } from '../../core/ui/ConfirmDialog'
 import { Confetti } from '../../core/ui/Confetti'
 import { AvatarProgress, Waiting } from '../../core/ui/Waiting'
 import { s } from './strings.de'
@@ -194,6 +195,7 @@ export function ReviewingClues(props: PhaseProps) {
 export function Guessing(props: PhaseProps) {
   const { snapshot, nameOf, playerOf, isGuesser, actions, busy, run } = props
   const [text, setText] = useState('')
+  const confirm = useConfirm()
 
   if (!isGuesser) {
     return (
@@ -231,13 +233,14 @@ export function Guessing(props: PhaseProps) {
           type="button"
           className="button secondary"
           disabled={busy}
-          onClick={() => {
-            if (window.confirm(s.confirmPass)) run(() => actions.submitGuess(null))
-          }}
+          onClick={() =>
+            confirm.ask(s.confirmPass, () => run(() => actions.submitGuess(null)))
+          }
         >
           {s.pass}
         </button>
       </form>
+      {confirm.dialog}
     </>
   )
 }

@@ -5,6 +5,7 @@ import { useQuery } from '../../core/room/useQuery'
 import { errorText } from '../../core/rpc'
 import { t } from '../../core/strings.de'
 import { ErrorMessage } from '../../core/ui/components'
+import { useConfirm, type Confirmation } from '../../core/ui/ConfirmDialog'
 import { Confetti } from '../../core/ui/Confetti'
 import { PlayerList } from '../../core/ui/PlayerList'
 import { ranking } from '../../core/ui/ranking'
@@ -30,6 +31,12 @@ export function ImposterGame({ room, players, userId, online, refresh }: GameVie
     await Promise.all([refresh(), query.refresh()])
   })
   const snapshot = query.data
+  // Kicking and aborting stay valid across rounds, but not past the end.
+  const hostConfirm = useConfirm(String(snapshot?.game.phase === 'game_over'))
+  // A question about the round is outdated once its action is no longer possible.
+  const roundConfirm = useConfirm(
+    `${snapshot?.game.round_no}:${['hints', 'voting'].includes(snapshot?.game.phase ?? '')}`,
+  )
 
   if (!snapshot) {
     return (
@@ -45,9 +52,10 @@ export function ImposterGame({ room, players, userId, online, refresh }: GameVie
   const over = game.phase === 'game_over'
   const inRound = !over && game.phase !== 'round_result'
 
-  const confirmThen = (question: string, action: () => Promise<unknown>) => () => {
-    if (window.confirm(question)) void run(action)
-  }
+  const confirmThen = (question: Confirmation, action: () => Promise<unknown>) => () =>
+    hostConfirm.ask(question, () => void run(action))
+  const confirmRoundThen = (question: Confirmation, action: () => Promise<unknown>) => () =>
+    roundConfirm.ask(question, () => void run(action))
 
   let content
   if (game.phase === 'game_over') {
@@ -151,7 +159,7 @@ export function ImposterGame({ room, players, userId, online, refresh }: GameVie
               <button
                 className="button secondary"
                 disabled={busy}
-                onClick={confirmThen(s.confirmCancelRound, actions.cancelRound)}
+                onClick={confirmRoundThen(s.confirmCancelRound, actions.cancelRound)}
               >
                 {s.cancelRound}
               </button>
@@ -166,6 +174,8 @@ export function ImposterGame({ room, players, userId, online, refresh }: GameVie
           </div>
         </details>
       )}
+      {hostConfirm.dialog}
+      {roundConfirm.dialog}
     </>
   )
 }

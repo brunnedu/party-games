@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import type { Player } from '../../core/room/api'
 import { Avatar } from '../../core/ui/Avatar'
+import { useConfirm } from '../../core/ui/ConfirmDialog'
 import { Waiting } from '../../core/ui/Waiting'
 import type { RoundActions, Snapshot, Verdict } from './api'
 import { DiceFace } from './DiceFace'
@@ -73,9 +74,10 @@ export function Bidding({ snapshot, userId, nameOf, actions, busy, run }: PhaseP
   const { game, own_dice } = snapshot
   const playing = diceOf(game, userId) > 0
   const previous = playing ? previousPlayer(game, userId) : undefined
+  const confirm = useConfirm()
 
   function doubt() {
-    if (previous && window.confirm(s.confirmDoubt(nameOf(previous)))) run(actions.doubt)
+    if (previous) confirm.ask(s.confirmDoubt(nameOf(previous)), () => run(actions.doubt))
   }
 
   return (
@@ -97,6 +99,7 @@ export function Bidding({ snapshot, userId, nameOf, actions, busy, run }: PhaseP
           <p className="muted center">{s.doubtHelp}</p>
         </>
       )}
+      {confirm.dialog}
     </>
   )
 }
