@@ -69,6 +69,12 @@ export const t = {
     no_clues_yet: 'Es gibt noch keinen Hinweis.',
     players_still_here:
       'Das geht erst, wenn die fehlenden Personen offline sind (und du selbst alles erledigt hast).',
+    invalid_word: 'Gib mindestens ein Wort ein, höchstens 40 Zeichen lang.',
+    too_many_words: 'So viele Wörter sind nicht erlaubt.',
+    already_submitted: 'Deine Wörter sind schon gespeichert.',
+    no_words: 'Es gibt noch keine Wörter.',
+    time_up: 'Die Zeit ist um.',
+    time_not_up: 'Die Zeit läuft noch.',
     unknown: 'Etwas ist schiefgelaufen. Prüfe deine Verbindung und versuche es nochmal.',
   },
 }

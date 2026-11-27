@@ -28,6 +28,8 @@ export interface GameDefinition {
   /** Keep in sync with the game_types table, which enforces these. */
   minPlayers: number
   maxPlayers: number
+  /** Replaces the "2–10 Personen" line, if phones and people differ. */
+  playersLabel?: string
   /** Starts the game for a room (host only). */
   start: (roomId: string) => Promise<unknown>
   /** Optional extra card in the lobby, e.g. for settings the host chooses. */

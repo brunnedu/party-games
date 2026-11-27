@@ -1,7 +1,7 @@
 # Party Games
 
 Browser party games: one person creates a room, everyone else joins with their phone by QR code or
-5-character code. Games: **Just One**, **Imposter**, **Wavelength**, **Der wahre Walter** and **Liar's Dice**. The UI is in German (Swiss spelling).
+5-character code. Games: **Just One**, **Imposter**, **Wavelength**, **Der wahre Walter**, **Liar's Dice** and **Extreme Activity**. The UI is in German (Swiss spelling).
 
 Vite + React + TypeScript, Supabase (Postgres, Realtime, anonymous sign-ins), GitHub Pages.
 
@@ -165,6 +165,24 @@ The game idea is by Urs Hostettler (Fata Morgana Spiele). Sentences and artwork 
 - Dice are rolled by the database; others' dice are unreadable until a doubt.
 - The host can reroll a round without penalty. Leaving removes your dice and rerolls the round. Nobody
   can join a running game.
+
+### Extreme Activity rules
+
+- At least 4 people in two teams, sitting alternately. The app knows only "Rot" and "Blau", not who
+  is in which team.
+- **Words:** everyone writes 1–3 words (the host can allow up to 6); about 20–30 in total work well.
+  People can write on their own phone or borrow one and enter a name. Saved words aren't shown again
+  until the end. One joined phone is enough; the host checks that everyone is done.
+- **Playing:** one *game phone* is passed around (the host's, unless the host picks another). Only it
+  shows the current word. A turn lasts 60 seconds; each guessed word is a point for the team. Words
+  can't be skipped. The word left when time runs out goes back into the bucket.
+- **Five modes**, each with all words once: explain (not the word or parts of it), one word,
+  pantomime, statue (a single pose), sound. If the words of a mode run out during a turn, the same
+  player continues in the next mode with the time left.
+- After each turn, the words guessed in the last mode played can be corrected, and the open word can
+  still be counted. Correct before tapping "Weitergeben".
+- The host can change the game phone at any time (this pauses the clock). If the host's phone fails,
+  another player can take over as host and continue.
 
 ## Adding a game
 

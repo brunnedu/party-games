@@ -21,7 +21,7 @@ export function HubPage() {
               </span>
               <h2>{game.name}</h2>
               <p>{game.description}</p>
-              <p className="muted">{t.players(game.minPlayers, game.maxPlayers)}</p>
+              <p className="muted">{game.playersLabel ?? t.players(game.minPlayers, game.maxPlayers)}</p>
             </Link>
           </li>
         ))}

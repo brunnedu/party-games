@@ -1,0 +1,226 @@
+.team-0 {
+  --team: var(--accent);
+}
+
+.team-1 {
+  --team: #2f5f8a;
+}
+
+.team-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--team);
+  color: #fff;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Two classes, to win over ".card" regardless of stylesheet order. */
+.card.team-card {
+  background: var(--team);
+  border-color: var(--team);
+  color: #fff;
+}
+
+.card.team-card .secret-word {
+  color: #fff;
+}
+
+.card.team-edge {
+  border-top: 10px solid var(--team);
+}
+
+.mode-info p {
+  max-width: 24rem;
+  margin-inline: auto;
+}
+
+.card.center .big-button {
+  min-height: 76px;
+  font-size: 1.5rem;
+}
+
+/* ---- The running turn ---------------------------------------------------- */
+
+.turn-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px calc(14px + env(safe-area-inset-bottom));
+  border: 8px solid var(--team);
+  background: var(--bg);
+  overflow-y: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+.turn-screen > * {
+  width: 100%;
+  max-width: 30rem;
+  margin-inline: auto;
+}
+
+.turn-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.clock {
+  font-size: 2.4rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.turn-top .pause-button {
+  width: auto;
+  min-height: 42px;
+  padding: 6px 14px;
+}
+
+.time-bar {
+  flex: none;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--slot);
+  overflow: hidden;
+}
+
+.time-bar i {
+  display: block;
+  height: 100%;
+  background: var(--team);
+  transition: width 0.2s linear;
+}
+
+.card.turn-word {
+  flex: 1;
+  min-height: 8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.turn-screen .guess-button {
+  flex: none;
+  min-height: 28vh;
+  font-size: 1.8rem;
+}
+
+/* ---- Lists, tables, settings --------------------------------------------- */
+
+.turn-list,
+.word-reveal,
+.writer-list {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.turn-list button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 10px 12px;
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: transparent;
+  text-align: left;
+}
+
+.turn-list button[aria-pressed='true'] {
+  border-style: solid;
+  background: var(--surface);
+}
+
+.turn-list-word {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.writer-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.writer-list li {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--slot);
+}
+
+.word-reveal li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  overflow-wrap: anywhere;
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.score-table th,
+.score-table td {
+  padding: 5px 4px;
+  border-bottom: 1px dashed var(--border);
+  text-align: center;
+}
+
+.score-table th[scope='row'] {
+  text-align: left;
+  font-weight: 400;
+}
+
+.score-table tfoot th[scope='row'],
+.score-table tfoot td {
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.number-choice {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+.number-choice button {
+  padding: 10px 0;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+}
+
+.number-choice button[aria-pressed='true'] {
+  border-color: var(--text);
+  background: var(--surface);
+  font-weight: 800;
+  opacity: 1;
+}
+
+.card select {
+  font: inherit;
+  width: 100%;
+  padding: 10px;
+  border: 2px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+}
