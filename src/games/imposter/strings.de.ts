@@ -55,7 +55,11 @@ export const s = {
   scores: 'Punktestand',
   nextRound: 'Nächste Runde',
   endGame: 'Spiel beenden',
-  confirmEndGame: 'Spiel wirklich beenden und die Rangliste zeigen?',
+  confirmEndGame: {
+    title: 'Spiel beenden?',
+    text: 'Danach seht ihr die Rangliste.',
+    confirmLabel: 'Spiel beenden',
+  },
   waitingForNext: 'Der Host startet die nächste Runde.',
   joinNow: (code: string) => `Jetzt können neue Leute beitreten. Raumcode: ${code}`,
   watching: 'Du spielst ab der nächsten Runde mit.',
@@ -70,9 +74,17 @@ export const s = {
   closeVoting: 'Ohne offline Personen auszählen',
   skipGuess: 'Tipp überspringen (Imposter offline)',
   cancelRound: 'Runde abbrechen (keine Punkte)',
-  confirmCancelRound: 'Diese Runde wirklich abbrechen?',
+  confirmCancelRound: {
+    title: 'Runde abbrechen?',
+    text: 'Für diese Runde gibt es keine Punkte.',
+    confirmLabel: 'Runde abbrechen',
+  },
   abort: 'Spiel abbrechen',
-  confirmAbort: 'Spiel wirklich abbrechen und zurück zur Lobby? Die Punkte gehen verloren.',
+  confirmAbort: {
+    title: 'Spiel abbrechen?',
+    text: 'Alle kehren zur Lobby zurück. Die Punkte gehen verloren.',
+    confirmLabel: 'Spiel abbrechen',
+  },
 
   unknownPlayer: 'Ehemalige Person',
 }

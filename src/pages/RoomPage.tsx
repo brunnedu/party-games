@@ -9,6 +9,7 @@ import { save } from '../core/storage'
 import { t } from '../core/strings.de'
 import { ensureUserId } from '../core/supabase'
 import { ErrorMessage, Notice, Page } from '../core/ui/components'
+import { useConfirm } from '../core/ui/ConfirmDialog'
 import { JoinForm } from '../core/ui/JoinForm'
 import { Lobby } from '../core/ui/Lobby'
 import { useAction } from '../core/ui/useAction'
@@ -99,18 +100,21 @@ function RoomView({
 }) {
   const navigate = useNavigate()
   const { busy, error, run } = useAction(refresh)
+  // The question depends on whether a game is running.
+  const leaveConfirm = useConfirm(room.status)
   const host = players.find((p) => p.user_id === room.host_id)
   const hostOffline = host && online && room.host_id !== userId && !online.has(room.host_id)
   const props = { room, players, userId, online, refresh }
 
   function leave() {
     const question = room.status === 'playing' ? t.confirmLeaveRunning : t.confirmLeave
-    if (!window.confirm(question)) return
-    void run(async () => {
-      await roomApi.leave(room.id)
-      save(`last-room:${game.id}`, '')
-      navigate(`/${game.id}`)
-    })
+    leaveConfirm.ask(question, () =>
+      void run(async () => {
+        await roomApi.leave(room.id)
+        save(`last-room:${game.id}`, '')
+        navigate(`/${game.id}`)
+      }),
+    )
   }
 
   return (
@@ -140,6 +144,7 @@ function RoomView({
       <button className="link-button leave" onClick={leave} disabled={busy}>
         {t.leave}
       </button>
+      {leaveConfirm.dialog}
     </Page>
   )
 }

@@ -76,9 +76,17 @@ export const s = {
   forceContinue: 'Ohne offline Personen weiter',
   forceReveal: 'Auflösen (Sphinx ist offline)',
   skipRound: 'Runde ersetzen (zählt nicht)',
-  confirmSkipRound: 'Diese Runde wirklich ersetzen?',
+  confirmSkipRound: {
+    title: 'Runde ersetzen?',
+    text: 'Es beginnt eine neue Runde. Diese zählt nicht.',
+    confirmLabel: 'Ersetzen',
+  },
   abort: 'Spiel abbrechen',
-  confirmAbort: 'Spiel wirklich abbrechen und zurück zur Lobby? Die Punkte gehen verloren.',
+  confirmAbort: {
+    title: 'Spiel abbrechen?',
+    text: 'Alle kehren zur Lobby zurück. Die Punkte gehen verloren.',
+    confirmLabel: 'Spiel abbrechen',
+  },
 
   unknownPlayer: 'Ehemalige Person',
 }

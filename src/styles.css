@@ -411,6 +411,36 @@ li > a.game-card:focus-visible {
   color: var(--muted);
 }
 
+/* ---- Confirmation dialog ------------------------------------------------- */
+
+.confirm-dialog {
+  width: min(22rem, calc(100% - 32px));
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.confirm-dialog[open] {
+  animation: pop-in 0.2s ease-out;
+}
+
+/* A fixed color: older Safari doesn't pass CSS variables on to the backdrop. */
+.confirm-dialog::backdrop {
+  background: rgb(51 41 28 / 60%);
+}
+
+.confirm-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
 @keyframes pop-in {
   from {
     opacity: 0;

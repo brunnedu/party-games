@@ -32,7 +32,11 @@ export const s = {
 
   doubt: 'Anzweifeln!',
   doubtHelp: 'Nur wenn du an der Reihe bist: Du zweifelst das Gebot vor dir an.',
-  confirmDoubt: (name: string) => `Du zweifelst an ${name}s Aussage?`,
+  confirmDoubt: (name: string) => ({
+    title: 'Anzweifeln?',
+    text: `Du zweifelst an der Aussage von ${name}. Danach werden alle Würfel aufgedeckt.`,
+    confirmLabel: 'Anzweifeln',
+  }),
 
   doubts: (doubter: string, accused: string) => `${doubter} zweifelt an ${accused}!`,
   summary: 'Alle Würfel',
@@ -61,9 +65,17 @@ export const s = {
 
   hostTools: 'Host-Optionen',
   reroll: 'Neu würfeln (niemand verliert)',
-  confirmReroll: 'Diese Runde wirklich ohne Verlust neu starten?',
+  confirmReroll: {
+    title: 'Neu würfeln?',
+    text: 'Diese Runde startet neu. Niemand verliert einen Würfel.',
+    confirmLabel: 'Neu würfeln',
+  },
   abort: 'Spiel abbrechen',
-  confirmAbort: 'Spiel wirklich abbrechen und zurück zur Lobby?',
+  confirmAbort: {
+    title: 'Spiel abbrechen?',
+    text: 'Alle kehren zur Lobby zurück.',
+    confirmLabel: 'Spiel abbrechen',
+  },
 
   unknownPlayer: 'Ehemalige Person',
 }

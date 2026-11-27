@@ -23,14 +23,26 @@ export const t = {
   host: 'Host',
   offline: 'offline',
   kick: 'Entfernen',
-  confirmKick: (name: string) => `${name} wirklich aus dem Raum entfernen?`,
+  confirmKick: (name: string) => ({
+    title: `${name} entfernen?`,
+    text: 'Die Person kann diesem Raum nicht wieder beitreten.',
+    confirmLabel: 'Entfernen',
+  }),
   startGame: 'Spiel starten',
   needPlayers: (n: number) => `Noch ${n} ${n === 1 ? 'Person' : 'Personen'} nötig`,
   waitingForHost: 'Warte, bis der Host das Spiel startet …',
   leave: 'Raum verlassen',
-  confirmLeave: 'Raum wirklich verlassen?',
-  confirmLeaveRunning:
-    'Raum wirklich verlassen? Während eines laufenden Spiels kannst du nicht wieder einsteigen.',
+  confirmLeave: {
+    title: 'Raum verlassen?',
+    text: 'Solange das Spiel noch nicht läuft, kannst du wieder beitreten.',
+    confirmLabel: 'Verlassen',
+  },
+  confirmLeaveRunning: {
+    title: 'Raum verlassen?',
+    text: 'Während eines laufenden Spiels kannst du nicht wieder einsteigen.',
+    confirmLabel: 'Verlassen',
+  },
+  dialogBack: 'Zurück',
   hostOffline: (name: string) => `${name} (Host) ist offline.`,
   claimHost: 'Host übernehmen',
 

@@ -4,6 +4,7 @@ import { useQuery } from '../../core/room/useQuery'
 import { errorText } from '../../core/rpc'
 import { t } from '../../core/strings.de'
 import { ErrorMessage } from '../../core/ui/components'
+import { useConfirm, type Confirmation } from '../../core/ui/ConfirmDialog'
 import { Confetti } from '../../core/ui/Confetti'
 import { PlayerList } from '../../core/ui/PlayerList'
 import { useAction } from '../../core/ui/useAction'
@@ -28,6 +29,8 @@ export function ActivityGame({ room, players, userId, online, refresh }: GameVie
   const isPhone = snapshot?.phone_id === userId
   const inTurns = phase !== undefined && phase !== 'writing' && phase !== 'game_over'
   useWakeLock(isPhone && inTurns)
+  // Kicking and aborting stay valid across rounds, but not past the end.
+  const hostConfirm = useConfirm(String(snapshot?.game.phase === 'game_over'))
 
   if (!snapshot) {
     return (
@@ -40,9 +43,8 @@ export function ActivityGame({ room, players, userId, online, refresh }: GameVie
   const nameOf = (id: string) => players.find((p) => p.user_id === id)?.name ?? '…'
   const over = game.phase === 'game_over'
 
-  const confirmThen = (question: string, action: () => Promise<unknown>) => () => {
-    if (window.confirm(question)) void run(action)
-  }
+  const confirmThen = (question: Confirmation, action: () => Promise<unknown>) => () =>
+    hostConfirm.ask(question, () => void run(action))
 
   let content
   if (game.phase === 'writing') {
@@ -138,6 +140,7 @@ export function ActivityGame({ room, players, userId, online, refresh }: GameVie
           </div>
         </details>
       )}
+      {hostConfirm.dialog}
     </>
   )
 }

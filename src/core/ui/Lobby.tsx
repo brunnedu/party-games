@@ -4,6 +4,7 @@ import type { GameDefinition, GameViewProps } from '../game'
 import { roomApi } from '../room/api'
 import { t } from '../strings.de'
 import { ErrorMessage } from './components'
+import { useConfirm } from './ConfirmDialog'
 import { PlayerList } from './PlayerList'
 import { useAction } from './useAction'
 
@@ -21,6 +22,7 @@ export function Lobby({
 }: GameViewProps & { game: GameDefinition }) {
   const { busy, error, run } = useAction(refresh)
   const [copied, setCopied] = useState(false)
+  const confirm = useConfirm()
   const isHost = room.host_id === userId
   const missing = game.minPlayers - players.length
   const link = joinLink(room.code)
@@ -68,11 +70,10 @@ export function Lobby({
           online={online}
           onKick={
             isHost
-              ? (p) => {
-                  if (window.confirm(t.confirmKick(p.name))) {
-                    void run(() => roomApi.kick(room.id, p.user_id))
-                  }
-                }
+              ? (p) =>
+                  confirm.ask(t.confirmKick(p.name), () =>
+                    void run(() => roomApi.kick(room.id, p.user_id)),
+                  )
               : undefined
           }
         />
@@ -89,6 +90,7 @@ export function Lobby({
         )}
         <ErrorMessage>{error}</ErrorMessage>
       </section>
+      {confirm.dialog}
     </>
   )
 }

@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import type { Player, Room } from '../../core/room/api'
 import { Avatar } from '../../core/ui/Avatar'
+import { useConfirm } from '../../core/ui/ConfirmDialog'
 import { Confetti } from '../../core/ui/Confetti'
 import { Scoreboard } from '../../core/ui/Scoreboard'
 import { AvatarProgress, Waiting } from '../../core/ui/Waiting'
@@ -181,6 +182,7 @@ export function RoundResult({
   run,
 }: PhaseProps) {
   const { game, votes, scores } = snapshot
+  const confirm = useConfirm()
   const outcome = game.outcome ?? 'cancelled'
   const imposter = game.imposter_id ?? ''
   const isImposter = imposter === userId
@@ -231,9 +233,7 @@ export function RoundResult({
           <button
             className="button secondary"
             disabled={busy}
-            onClick={() => {
-              if (window.confirm(s.confirmEndGame)) run(actions.endGame)
-            }}
+            onClick={() => confirm.ask(s.confirmEndGame, () => run(actions.endGame))}
           >
             {s.endGame}
           </button>
@@ -241,6 +241,7 @@ export function RoundResult({
       ) : (
         <Waiting icon="⏳">{s.waitingForNext}</Waiting>
       )}
+      {confirm.dialog}
     </>
   )
 }

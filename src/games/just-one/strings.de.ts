@@ -39,7 +39,11 @@ export const s = {
   yourGuess: 'Deine Antwort',
   guess: 'Raten',
   pass: 'Passen',
-  confirmPass: 'Wirklich passen? Die Karte ist dann weg.',
+  confirmPass: {
+    title: 'Wirklich passen?',
+    text: 'Die Karte ist dann weg.',
+    confirmLabel: 'Passen',
+  },
   waitingForGuess: (name: string) => `${name} überlegt …`,
 
   resultCorrect: 'Richtig! Ein Punkt.',
@@ -72,9 +76,17 @@ export const s = {
   hostTools: 'Host-Optionen',
   forceContinue: 'Ohne fehlende Personen weiter',
   skipRound: 'Runde überspringen (Karte verfällt)',
-  confirmSkipRound: 'Diese Karte wirklich verwerfen?',
+  confirmSkipRound: {
+    title: 'Karte verwerfen?',
+    text: 'Die Runde wird übersprungen und die Karte verfällt.',
+    confirmLabel: 'Verwerfen',
+  },
   abort: 'Spiel abbrechen',
-  confirmAbort: 'Spiel wirklich abbrechen und zurück zur Lobby?',
+  confirmAbort: {
+    title: 'Spiel abbrechen?',
+    text: 'Alle kehren zur Lobby zurück.',
+    confirmLabel: 'Spiel abbrechen',
+  },
 
   unknownPlayer: 'Ehemalige Person',
 

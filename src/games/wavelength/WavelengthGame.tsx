@@ -6,6 +6,7 @@ import { errorText } from '../../core/rpc'
 import { t } from '../../core/strings.de'
 import { Avatar } from '../../core/ui/Avatar'
 import { ErrorMessage } from '../../core/ui/components'
+import { useConfirm, type Confirmation } from '../../core/ui/ConfirmDialog'
 import { Confetti } from '../../core/ui/Confetti'
 import { PlayerList } from '../../core/ui/PlayerList'
 import { useAction } from '../../core/ui/useAction'
@@ -64,6 +65,12 @@ export function WavelengthGame({ room, players, userId, online, refresh }: GameV
   const reload = () => Promise.all([refresh(), query.refresh()])
   const { busy, error, run } = useAction(reload)
   const snapshot = query.data
+  // Kicking and aborting stay valid across rounds, but not past the end.
+  const hostConfirm = useConfirm(String(snapshot?.game.phase === 'game_over'))
+  // A question about the round is outdated once its action is no longer possible.
+  const roundConfirm = useConfirm(
+    `${snapshot?.game.round_no}:${['clue', 'guessing'].includes(snapshot?.game.phase ?? '')}`,
+  )
 
   if (!snapshot) {
     return (
@@ -79,9 +86,10 @@ export function WavelengthGame({ room, players, userId, online, refresh }: GameV
   const actions = roundActions(room.id, game.round_no)
   const over = game.phase === 'game_over'
 
-  const confirmThen = (question: string, action: () => Promise<unknown>) => () => {
-    if (window.confirm(question)) void run(action)
-  }
+  const confirmThen = (question: Confirmation, action: () => Promise<unknown>) => () =>
+    hostConfirm.ask(question, () => void run(action))
+  const confirmRoundThen = (question: Confirmation, action: () => Promise<unknown>) => () =>
+    roundConfirm.ask(question, () => void run(action))
 
   let content
   if (game.phase === 'game_over') {
@@ -172,7 +180,7 @@ export function WavelengthGame({ room, players, userId, online, refresh }: GameV
               <button
                 className="button secondary"
                 disabled={busy}
-                onClick={confirmThen(s.confirmSkipRound, actions.skipRound)}
+                onClick={confirmRoundThen(s.confirmSkipRound, actions.skipRound)}
               >
                 {s.skipRound}
               </button>
@@ -187,6 +195,8 @@ export function WavelengthGame({ room, players, userId, online, refresh }: GameV
           </div>
         </details>
       )}
+      {hostConfirm.dialog}
+      {roundConfirm.dialog}
     </>
   )
 }

@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import type { Player } from '../../core/room/api'
+import { useConfirm } from '../../core/ui/ConfirmDialog'
 import { activityApi, type Snapshot } from './api'
 import { MaxWordsChoice } from './Settings'
 import { s } from './strings.de'
@@ -95,6 +96,7 @@ export function WordEntry({
   const [guest, setGuest] = useState(false)
   // Raised after saving, so the next person starts with an empty form.
   const [formNo, setFormNo] = useState(0)
+  const confirm = useConfirm()
   const { writers, words_total, max_words, own_submitted } = snapshot
   const missing = players
     .filter((p) => !writers.some((w) => w.name.toLowerCase() === p.name.toLowerCase()))
@@ -147,11 +149,11 @@ export function WordEntry({
             <button
               className="button"
               disabled={busy || words_total === 0}
-              onClick={() => {
-                if (window.confirm(s.confirmPlay(words_total, missing))) {
-                  void run(() => activityApi.play(roomId))
-                }
-              }}
+              onClick={() =>
+                confirm.ask(s.confirmPlay(words_total, missing), () =>
+                  void run(() => activityApi.play(roomId)),
+                )
+              }
             >
               {s.startPlaying}
             </button>
@@ -164,6 +166,7 @@ export function WordEntry({
         )}
         {!isHost && <p className="muted center">{s.waitingForPlay}</p>}
       </section>
+      {confirm.dialog}
     </>
   )
 }

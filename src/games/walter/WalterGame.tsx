@@ -6,6 +6,7 @@ import { errorText } from '../../core/rpc'
 import { t } from '../../core/strings.de'
 import { Avatar } from '../../core/ui/Avatar'
 import { ErrorMessage } from '../../core/ui/components'
+import { useConfirm, type Confirmation } from '../../core/ui/ConfirmDialog'
 import { Confetti } from '../../core/ui/Confetti'
 import { PlayerList } from '../../core/ui/PlayerList'
 import { ranking } from '../../core/ui/ranking'
@@ -32,6 +33,12 @@ export function WalterGame({ room, players, userId, online, refresh }: GameViewP
     await Promise.all([refresh(), query.refresh()])
   })
   const snapshot = query.data
+  // Kicking and aborting stay valid across rounds, but not past the end.
+  const hostConfirm = useConfirm(String(snapshot?.game.phase === 'game_over'))
+  // A question about the round is outdated once its action is no longer possible.
+  const roundConfirm = useConfirm(
+    `${snapshot?.game.round_no}:${['choosing', 'writing', 'voting'].includes(snapshot?.game.phase ?? '')}`,
+  )
 
   if (!snapshot) {
     return (
@@ -49,9 +56,10 @@ export function WalterGame({ room, players, userId, online, refresh }: GameViewP
   const revealing = game.phase === 'reveal' && game.reveal_step < game.reveal_steps
   const sphinxOffline = online !== null && !isSphinx && !online.has(game.sphinx_id)
 
-  const confirmThen = (question: string, action: () => Promise<unknown>) => () => {
-    if (window.confirm(question)) void run(action)
-  }
+  const confirmThen = (question: Confirmation, action: () => Promise<unknown>) => () =>
+    hostConfirm.ask(question, () => void run(action))
+  const confirmRoundThen = (question: Confirmation, action: () => Promise<unknown>) => () =>
+    roundConfirm.ask(question, () => void run(action))
 
   let content
   if (game.phase === 'game_over') {
@@ -177,7 +185,7 @@ export function WalterGame({ room, players, userId, online, refresh }: GameViewP
               <button
                 className="button secondary"
                 disabled={busy}
-                onClick={confirmThen(s.confirmSkipRound, actions.skipRound)}
+                onClick={confirmRoundThen(s.confirmSkipRound, actions.skipRound)}
               >
                 {s.skipRound}
               </button>
@@ -192,6 +200,8 @@ export function WalterGame({ room, players, userId, online, refresh }: GameViewP
           </div>
         </details>
       )}
+      {hostConfirm.dialog}
+      {roundConfirm.dialog}
     </>
   )
 }
