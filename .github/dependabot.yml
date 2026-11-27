@@ -1,0 +1,26 @@
+# Weekly pull requests for newer packages and actions. Security fixes come on
+# their own once "Dependabot security updates" is enabled in the settings.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # Give new releases a few days, in case one turns out to be broken or
+    # malicious. Doesn't delay security fixes.
+    cooldown:
+      default-days: 7
+    groups:
+      # Small updates together; major versions get their own pull request.
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']
