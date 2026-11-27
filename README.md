@@ -95,6 +95,26 @@ Presence or the cleanup schedule.
 - Rooms idle for 24 hours are deleted. Free Supabase projects pause after 7 days without activity;
   resume them in the dashboard.
 
+### Security
+
+The website and its Supabase key are public, and anyone can sign in anonymously. What protects the
+data are the database rules. [`permissions.test.ts`](supabase/tests/permissions.test.ts) fails if a
+migration gives clients write access to a table, leaves a table without Row Level Security, or opens
+up functions they shouldn't run.
+
+[Pull requests are tested](.github/workflows/test.yml), and
+[Dependabot](.github/dependabot.yml) proposes updates every week. Merging one deploys it, so check
+that its tests pass first. The tests don't cover the browser, so after updating packages the app
+runs on, also try it.
+
+Set once, by the owner:
+
+- Two-factor login for GitHub and Supabase. Both accounts can change the live site or its data.
+- GitHub, in the repository's security settings: Dependabot alerts and security updates, secret
+  scanning with push protection, and code scanning.
+- Supabase: only anonymous sign-ins enabled (turn off email and other providers), and `private` not
+  among the exposed schemas. Look at the Security Advisor now and then.
+
 ### Just One house rules
 
 - 3–10 players. Players can only join in the lobby.
@@ -199,7 +219,10 @@ The game idea is by Urs Hostettler (Fata Morgana Spiele). Sentences and artwork 
      `private.touch` afterwards. Set the room to `finished` when the game ends,
    - handles players leaving mid-game (trigger on `players`; see `just_one_player_removed`),
    - optionally sets `rooms.open_to_join` while it is safe for new players to join,
-   - revokes `execute` from `public, anon` on new functions and grants it to `authenticated`.
+   - revokes `execute` from `public, anon` on new functions and grants it to `authenticated`,
+   - if it adds functions to `private`, ends with
+     `revoke execute on all functions in schema private from public, anon, authenticated;` and
+     grants `private.is_member(uuid)` to `authenticated` again.
 4. Add tests in `supabase/tests/`.
 
 A game with settings in the lobby adds a `LobbySettings` component to its definition. The hub, lobby,
