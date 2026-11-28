@@ -12,6 +12,7 @@ export const walter: GameDefinition = {
   color: '#e6a49a',
   minPlayers: 3,
   maxPlayers: 10,
+  rejoin: 'between-rounds',
   start: walterApi.start,
   View: WalterGame,
 }

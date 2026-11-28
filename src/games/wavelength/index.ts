@@ -13,6 +13,7 @@ export const wavelength: GameDefinition = {
   color: '#f2c9a0',
   minPlayers: 2,
   maxPlayers: 10,
+  rejoin: 'between-rounds',
   start: wavelengthApi.start,
   LobbySettings: WavelengthLobbySettings,
   View: WavelengthGame,
