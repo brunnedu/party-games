@@ -139,8 +139,10 @@ describe('with a password', () => {
   })
 
   it('refuses short and overlong passwords, and stores only a hash', async () => {
-    await expect(setPassword('zu kurz')).rejects.toThrow('12 to 72')
-    await expect(setPassword('x'.repeat(73))).rejects.toThrow('12 to 72')
+    await expect(setPassword('x'.repeat(8))).rejects.toThrow('9 to 72')
+    await expect(setPassword(`  ${'x'.repeat(8)}  `)).rejects.toThrow('9 to 72')
+    await expect(setPassword('x'.repeat(73))).rejects.toThrow('9 to 72')
+    await setPassword('x'.repeat(9))
     await setPassword()
     const { rows } = await t.db.query<any>('select hash from private.app_password')
     expect(rows[0].hash).toMatch(/^\$2a\$10\$/)
