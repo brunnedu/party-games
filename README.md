@@ -115,6 +115,50 @@ Set once, by the owner:
 - Supabase: only anonymous sign-ins enabled (turn off email and other providers), and `private` not
   among the exposed schemas. Look at the Security Advisor now and then.
 
+### Password and invites
+
+Creating a room needs the site password. Joining needs the password or the room's invite, which the
+QR code and the copied link carry, so guests who scan it type only their name. Anyone who has the
+link can join while that room takes new players. Removing someone replaces the invite. The database
+checks all of this. A browser enters the password once.
+
+**Protection is off until you set a password**, in the SQL Editor. Use four or more random words,
+and delete the saved query afterwards, because it contains the password:
+
+```sql
+select private.set_app_password('...');       -- set or change; every browser has to enter it again
+select private.remove_app_password();         -- protection off
+select password_set from private.access_status; -- is it on?
+```
+
+Wrong attempts are limited to 10 per browser or address in 15 minutes, and 100 per hour in total.
+Someone who uses up the total keeps new browsers from unlocking for a while; invites and unlocked
+browsers still work. The password doesn't stop automated anonymous sign-ins or misuse of the
+Realtime channels.
+
+### Access log
+
+The database records password attempts and room lookups, creations, joins and returns, with time,
+account ID, IP address, browser, and name and room code where known. Just browsing the games isn't
+recorded. Passwords never are. Only the project's owner can read it, in the SQL Editor:
+
+```sql
+select * from private.access_overview;                       -- one row per browser
+select * from private.access_log order by at desc limit 100; -- every entry
+select * from private.access_status;                         -- how full the log is
+```
+
+- IP addresses help to recognize visitors but can be misleading or faked.
+- Repeats within an hour are left out, and there are limits per hour, so heavy traffic leaves gaps.
+- **Entries are kept until you delete them.** At 100,000 entries new ones stop; the game keeps
+  working. The app tells users that entries are kept. IP addresses with names are personal data, so
+  delete what you no longer need, or what someone asks you to:
+
+  ```sql
+  delete from private.access_log where at < now() - interval '90 days';
+  delete from private.access_log where user_id = '...';
+  ```
+
 ### Just One house rules
 
 - 3–10 players. Players can only join in the lobby.

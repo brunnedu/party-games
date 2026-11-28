@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import type { GameDefinition } from '../core/game'
 import { roomApi, type RoomSnapshot } from '../core/room/api'
 import { useQuery } from '../core/room/useQuery'
@@ -12,6 +12,7 @@ import { ErrorMessage, Notice, Page } from '../core/ui/components'
 import { useConfirm } from '../core/ui/ConfirmDialog'
 import { JoinForm } from '../core/ui/JoinForm'
 import { Lobby } from '../core/ui/Lobby'
+import { PasswordForm } from '../core/ui/PasswordForm'
 import { useAction } from '../core/ui/useAction'
 import { findGame } from '../games/registry'
 
@@ -38,6 +39,12 @@ function RoomLoader({ game, code }: { game: GameDefinition; code: string }) {
     wasMember.current = true
     save(`last-room:${data.room.game_type}`, data.room.code)
   }, [data])
+
+  // For the access log. It must never get in the way.
+  const roomId = data?.room.id
+  useEffect(() => {
+    if (roomId) roomApi.noteReturn(roomId).catch(() => {})
+  }, [roomId])
 
   if (data === undefined || !userId) {
     return <Notice>{error ? errorText(error) : t.loading}</Notice>
@@ -66,16 +73,27 @@ function RoomLoader({ game, code }: { game: GameDefinition; code: string }) {
 }
 
 function JoinGate({ code, onJoined }: { code: string; onJoined: () => Promise<void> }) {
-  const { data: info, error } = useQuery(() => roomApi.info(code), code)
+  const invite = useSearchParams()[0].get('k') ?? ''
+  const { data: info, error, refresh } = useQuery(
+    () => roomApi.info(code, invite),
+    `${code}:${invite}`,
+  )
   if (info === undefined) return <Notice>{error ? errorText(error) : t.loading}</Notice>
   if (info === null) return <Notice>{t.errors.room_not_found}</Notice>
+  if (info.access_required) {
+    return (
+      <Page title={t.joinRoomTitle(code)}>
+        <PasswordForm invalidInvite={Boolean(invite)} onUnlocked={refresh} />
+      </Page>
+    )
+  }
   if (!info.joinable) return <Notice>{t.errors.game_running}</Notice>
   return (
     <Page title={t.joinRoomTitle(code)}>
       <JoinForm
         submitLabel={t.join}
         onSubmit={async (name) => {
-          await roomApi.join(code, name)
+          await roomApi.join(code, name, invite)
           await onJoined()
         }}
       />

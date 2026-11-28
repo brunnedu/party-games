@@ -43,6 +43,7 @@ export function JoinForm({
         {submitLabel}
       </button>
       <ErrorMessage>{error}</ErrorMessage>
+      <p className="muted notice">{t.accessNotice}</p>
     </form>
   )
 }

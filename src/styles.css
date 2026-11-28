@@ -411,6 +411,18 @@ li > a.game-card:focus-visible {
   color: var(--muted);
 }
 
+.invite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  align-self: stretch;
+}
+
+.notice {
+  font-size: 0.8rem;
+}
+
 /* ---- Confirmation dialog ------------------------------------------------- */
 
 .confirm-dialog {

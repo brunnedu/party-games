@@ -69,7 +69,9 @@ describe('rooms', () => {
     expect(await t.as(outsider, 'select * from players where room_id = $1', [roomId])).toEqual([])
     expect(await t.as(outsider, 'select * from rooms where id = $1', [roomId])).toEqual([])
     const info = await t.as(outsider, 'select * from get_room_info($1)', [code.toLowerCase()])
-    expect(info).toEqual([{ game_type: 'just-one', status: 'lobby', joinable: true }])
+    expect(info).toEqual([
+      { game_type: 'just-one', status: 'lobby', joinable: true, access_required: false },
+    ])
   })
 
   it('blocks direct writes and anonymous calls', async () => {
