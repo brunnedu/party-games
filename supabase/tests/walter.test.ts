@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { beforeAll, describe, expect, it } from 'vitest'
+import { pointsBreakdown } from '../../src/games/walter/breakdown'
 import { createDatabase, createRoom, type TestDb } from './harness'
 
 let t: TestDb
@@ -92,6 +93,9 @@ describe('matching answers', () => {
     expect(new Set(different).size).toBe(5)
     expect(new Set(await normalize(['geht’s', "geht's", 'gehts'])).size).toBe(1)
     expect(new Set(await normalize(['Bär', 'Bar'])).size).toBe(2)
+    // Swiss spelling has no sharp s, so it counts as "ss".
+    expect(new Set(await normalize(['Fussball', 'Fußball', 'FUẞBALL', 'fussball!'])).size).toBe(1)
+    expect(new Set(await normalize(['Masse', 'Maße', 'Mase'])).size).toBe(2)
     // An answer of only punctuation stays as it is.
     expect(await normalize(['?!', '...'])).toEqual(['?!', '...'])
   })
@@ -278,6 +282,89 @@ describe('scoring', () => {
     expect((await g.points())[sphinx]).toBe(2)
     expect(await g.state()).toMatchObject({ sphinx_foul: false })
   })
+})
+
+describe('everyone finds the truth, when only some votes are in', () => {
+  /** Four players or more; `voters` guessers pick the truth, the rest are offline. */
+  async function withVotes(voters: number) {
+    const g = await startGameWhere(false, 5)
+    await g.write()
+    await g.startReading()
+    const { sphinx, others } = await g.roles()
+    // The host must be among those who voted.
+    const order = [g.host, ...others.filter((u) => u !== g.host)]
+    for (const u of order.slice(0, voters)) await g.act(u, 'vote', await g.numberOf(sphinx))
+    await g.goOffline(order.slice(voters))
+    await g.act(g.host, 'force_continue')
+    await g.revealAll()
+    return { g, sphinx, voted: order.slice(0, voters) }
+  }
+
+  it('does not punish the Sphinx for a single vote', async () => {
+    const { g, sphinx, voted } = await withVotes(1)
+    expect(await g.points()).toEqual({ [voted[0]!]: 1, [sphinx]: 1 })
+    expect(await g.state()).toMatchObject({ sphinx_foul: false })
+  })
+
+  it('still gives the Sphinx nothing with two correct votes', async () => {
+    const { g, voted } = await withVotes(2)
+    expect(await g.points()).toEqual(Object.fromEntries(voted.map((u) => [u, 1])))
+    expect(await g.state()).toMatchObject({ sphinx_foul: true })
+  })
+})
+
+describe('the explanation of the points', () => {
+  /** What the app would show, added up per person, next to what was awarded. */
+  async function compare(g: Awaited<ReturnType<typeof startGame>>) {
+    const { game, reveals } = await g.snap(g.host)
+    const explained = pointsBreakdown(reveals, game.sphinx_id, game.sphinx_foul)
+    const totals = Object.fromEntries(
+      Object.entries(explained).map(([id, b]) => [id, b.truth + b.fake + b.sphinx]),
+    )
+    expect(totals).toEqual(game.round_points)
+    return explained
+  }
+
+  it('names the source of every point', async () => {
+    const g = await startGame(5)
+    await g.write()
+    await g.startReading()
+    const { sphinx, others } = await g.roles()
+    const [a, b, c, d] = others as [string, string, string, string]
+    await g.voteFor(sphinx, sphinx, a, a) // a, b: truth; c, d: a's fake
+    await g.revealAll()
+    expect(await compare(g)).toEqual({
+      [a]: { truth: 1, fake: 2, sphinx: 0 },
+      [b]: { truth: 1, fake: 0, sphinx: 0 },
+      [sphinx]: { truth: 0, fake: 0, sphinx: 2 },
+    })
+    expect([c, d]).toHaveLength(2)
+  })
+
+  it('agrees with the database in many random rounds, matching answers included', async () => {
+    // A few possible texts, so that answers often match each other or the truth.
+    const texts = ['Wahr', 'Fussball', 'Fußball', 'Brot', 'Käse', 'Tee', 'Zug']
+    let seed = 7
+    const random = (n: number) => (seed = (seed * 48271) % 2147483647) % n
+    for (let round = 0; round < 25; round++) {
+      const g = await startGame(3 + random(4))
+      const { others } = await g.roles()
+      await g.write('Wahr', others.map(() => texts[random(texts.length)]!))
+      await g.startReading()
+      const { sphinx } = await g.roles()
+      const everyoneRight = random(5) === 0
+      for (const voter of others) {
+        const own = await g.numberOf(voter)
+        let pick = everyoneRight ? await g.numberOf(sphinx) : 1 + random(others.length + 1)
+        // One's own answer only counts if there is a twin; otherwise take another.
+        const twin = (await g.snap(voter)).private.has_twin
+        if (pick === own && !twin) pick = (pick % (others.length + 1)) + 1
+        await g.act(voter, 'vote', pick)
+      }
+      await g.revealAll()
+      await compare(g)
+    }
+  }, 120_000)
 })
 
 describe('the reveal', () => {

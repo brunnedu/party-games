@@ -236,3 +236,15 @@
     transform: rotate(-4deg) scale(2.6);
   }
 }
+
+/* A name with the reasons for the points under it. */
+.point-source {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.point-source .player-name {
+  font-size: 1rem;
+}

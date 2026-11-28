@@ -59,6 +59,11 @@ export const s = {
   noPoints: 'In dieser Runde gab es keine Punkte.',
   foul: 'Alle haben die Wahrheit erkannt: Die Sphinx bekommt diesmal nichts.',
   gained: (n: number) => `+${n}`,
+  reasons: {
+    truth: (n: number) => `Wahrheit gefunden +${n}`,
+    fake: (n: number) => `${n === 1 ? 'Stimme' : 'Stimmen'} für die eigene Fälschung +${n}`,
+    sphinx: (n: number) => `Als Sphinx erkannt +${n}`,
+  },
   scores: 'Punktestand',
   nextRound: 'Nächste Runde',
   finish: 'Zur Rangliste',
