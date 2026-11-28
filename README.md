@@ -27,6 +27,7 @@ I built it in my free time, with the help of [Claude Code](https://claude.com/cl
 | **Imposter** | 3–10 | Everyone knows the secret word, except one of you |
 | **Extreme Activity** | 4+ | Two teams explain, act, pose and make noises |
 | **Dito!** | 3–10 | Write what the others write too, because only shared answers score |
+| **Decodo** | 4–8 | Two teams send secret codes with clues the other side shouldn't crack |
 
 The games are in German (Swiss spelling).
 
@@ -188,6 +189,35 @@ The game idea is by Urs Hostettler (Fata Morgana Spiele). Sentences and artwork 
 
 The game idea is by Martin Ang (published as JinxO and, in German, by Game Factory). Categories and
 artwork here are our own.
+
+</details>
+
+<details>
+<summary><b>Decodo</b></summary>
+
+- 4–8 players in two teams, Rot and Blau, with at least two each and sizes at most one apart. People
+  can only join in the lobby, where the host can move them or mix the teams.
+- Each team has four secret words, numbered 1–4, shown while you hold a card.
+- **A round:** one player per team (the role rotates) gets a code of three different numbers and
+  types a clue for each word. Once one has submitted, a 30-second timer runs for the other; it only
+  warns and cuts nobody off. For humming or miming, type a short label and perform it.
+- **Clues** are about meaning, not spelling, sound or position, and nothing private. No clue twice
+  per team in a game, and never one of the keywords. The app checks your own four words and your
+  team's earlier clues; the rest is up to you.
+- **Guessing:** Rot's code first, then Blau's. The team works out its own code, without the
+  clue-giver. From round 2, the other team tries to intercept it. One person locks in the team's
+  guess; both guesses are shown together with the code. The host or that clue-giver moves on.
+- **Tokens:** an interception earns one; a team that gets its own code wrong gets a
+  miscommunication. After a full round, two interceptions win and two miscommunications lose.
+- **Ties** (a team does both, both teams get there at once, or nobody has after round 8): +1 per
+  interception, −1 per miscommunication. If still tied, each team names the other's four words and
+  marks the other team's hits. Still tied: shared win.
+- The note sheet keeps every clue, sorted by number.
+- The host can pass an offline clue-giver's role to a teammate (with a new code, if the clues aren't
+  shown yet), or go on without a team's guess if nobody is there to make it. The game ends without a
+  winner if a team drops below two.
+
+Game idea by Thomas Dagenais-Lespérance. Words and artwork here are our own.
 
 </details>
 
