@@ -6,6 +6,7 @@ import { Avatar, avatarFor } from '../../core/ui/Avatar'
 import { ErrorMessage } from '../../core/ui/components'
 import { Confetti } from '../../core/ui/Confetti'
 import { InviteBanner } from '../../core/ui/Invite'
+import { Scoreboard } from '../../core/ui/Scoreboard'
 import { AvatarProgress, Waiting } from '../../core/ui/Waiting'
 import type { Mode, RoundActions, Snapshot } from './api'
 import { Dial } from './Dial'
@@ -31,7 +32,8 @@ export interface PhaseProps {
 export function CluePhase({ snapshot, userId, nameOf, actions, busy, run }: PhaseProps) {
   const { game, secret_target } = snapshot
   const [clue, setClue] = useState('')
-  const [mode, setMode] = useState<Mode>(game.mode)
+  const [chosen, setMode] = useState<Mode>(game.mode)
+  const mode: Mode = game.competitive ? 'individual' : chosen
   const ends = { left: game.left_label, right: game.right_label }
 
   if (game.giver_id !== userId) {
@@ -64,17 +66,21 @@ export function CluePhase({ snapshot, userId, nameOf, actions, busy, run }: Phas
             autoComplete="off"
           />
         </label>
-        <div className="stack">
-          <strong id="mode-label">{s.modeLabel}</strong>
-          <div className="tabs" role="group" aria-labelledby="mode-label">
-            {(['shared', 'individual'] as const).map((m) => (
-              <button type="button" key={m} aria-pressed={mode === m} onClick={() => setMode(m)}>
-                {s.modes[m]}
-              </button>
-            ))}
+        {game.competitive ? (
+          <p className="muted">{s.competitiveHelp}</p>
+        ) : (
+          <div className="stack">
+            <strong id="mode-label">{s.modeLabel}</strong>
+            <div className="tabs" role="group" aria-labelledby="mode-label">
+              {(['shared', 'individual'] as const).map((m) => (
+                <button type="button" key={m} aria-pressed={mode === m} onClick={() => setMode(m)}>
+                  {s.modes[m]}
+                </button>
+              ))}
+            </div>
+            <p className="muted">{s.modeHelp[mode]}</p>
           </div>
-          <p className="muted">{s.modeHelp[mode]}</p>
-        </div>
+        )}
         <button className="button" disabled={busy}>
           {clue.trim() ? s.giveTyped : s.giveSpoken}
         </button>
@@ -244,10 +250,18 @@ export function Reveal({
   actions,
   busy,
   run,
+  players,
 }: PhaseProps) {
-  const { game, guesses } = snapshot
+  const { game, guesses, scores } = snapshot
   const points = Number(game.round_points)
   const individual = game.mode === 'individual'
+  const { competitive } = game
+  const isGiver = game.giver_id === userId
+  const ownGuess = guesses.find((g) => g.player_id === userId)
+  // Competitive, and neither gave the clue nor guessed: joined just now, or was
+  // skipped. There is no result of their own to show.
+  const satOut = competitive && !isGiver && !ownGuess
+  const ownPoints = competitive && !isGiver ? (ownGuess?.points ?? 0) : points
   const isFinal = game.rounds_played >= game.rounds_total
   const markers = guesses.map((g) => {
     const { icon, color } = avatarFor(playerOf(g.player_id))
@@ -256,7 +270,8 @@ export function Reveal({
 
   return (
     <>
-      {points >= 3 && <Confetti />}
+      {/* Competitively, each one celebrates their own good round. */}
+      {ownPoints >= 3 && <Confetti />}
       <ClueCard clue={game.clue} />
       <Scale left={game.left_label} right={game.right_label}>
         <Dial
@@ -266,12 +281,20 @@ export function Reveal({
           markers={individual ? markers : []}
         />
       </Scale>
-      <section className={`card center result ${points >= 2 ? 'correct' : 'wrong'}`}>
-        <p className="result-headline">{s.verdict(points)}</p>
-        <p>
-          <strong>{s.roundPoints(points)}</strong>
-        </p>
-        {individual && <p className="muted">{s.averageNote}</p>}
+      <section
+        className={`card center result ${satOut ? '' : ownPoints >= 2 ? 'correct' : 'wrong'}`}
+      >
+        <p className="result-headline">{satOut ? s.satOut : s.verdict(ownPoints)}</p>
+        {!satOut && (
+          <p>
+            <strong>{s.roundPoints(ownPoints)}</strong>
+          </p>
+        )}
+        {competitive ? (
+          <p className="muted">{isGiver ? s.youGave : s.giverGets(nameOf(game.giver_id))}</p>
+        ) : (
+          individual && <p className="muted">{s.averageNote}</p>
+        )}
       </section>
       {individual && (
         <section className="card">
@@ -285,7 +308,21 @@ export function Reveal({
                   <span className="guess-points">{s.guessPoints(g.points ?? 0)}</span>
                 </li>
               ))}
+            {competitive && (
+              <li>
+                <Avatar player={playerOf(game.giver_id)} small />
+                <span className="player-name">{nameOf(game.giver_id)}</span>
+                <span className="tag">{s.giverTag}</span>
+                <span className="guess-points">{s.guessPoints(points)}</span>
+              </li>
+            )}
           </ul>
+        </section>
+      )}
+      {competitive && (
+        <section className="card">
+          <h2>{s.scores}</h2>
+          <Scoreboard players={players} scores={scores} userId={userId} />
         </section>
       )}
       {!isFinal && <InviteBanner room={room} text={s.joinNow(room.code)} />}

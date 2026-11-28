@@ -368,3 +368,131 @@ describe('scales', () => {
     expect(JSON.stringify(PAIRS_DE)).not.toContain('ß')
   })
 })
+
+describe('competitive', () => {
+  async function startCompetitive(n = 4) {
+    const room = await createRoom(t, n, 'wavelength')
+    const { users, roomId } = room
+    const host = users[0]!
+    await t.call(host, 'wavelength_set_settings', roomId, true)
+    await t.call(host, 'wavelength_start', roomId)
+    const snap = (user: string = host) => t.call(user, 'wavelength_snapshot', roomId)
+    const state = async () => (await snap()).game
+    const act = async (user: string, fn: string, ...args: unknown[]) =>
+      t.call(user, `wavelength_${fn}`, roomId, (await state()).round_no, ...args)
+    const roles = async () => {
+      const giver = (await state()).giver_id as string
+      const present = (await t.call(host, 'room_snapshot', room.code)).players as {
+        user_id: string
+      }[]
+      return { giver, guessers: present.map((p) => p.user_id).filter((p) => p !== giver) }
+    }
+    /** One round in which the guesses are these distances from the target. */
+    const play = async (distances: number[]) => {
+      const { giver, guessers } = await roles()
+      await act(giver, 'give_clue', 'individual', 'Kaffee')
+      const goal = (await snap(giver)).secret_target as number
+      for (const [i, distance] of distances.entries()) {
+        const position = goal + distance <= 100 ? goal + distance : goal - distance
+        await act(guessers[i]!, 'submit_guess', position)
+      }
+      return { giver, guessers }
+    }
+    const scores = async () => (await snap()).scores as Record<string, number>
+    return { ...room, host, snap, state, act, roles, play, scores }
+  }
+
+  it('can only be switched by the host, and only in the lobby', async () => {
+    const { users, roomId } = await createRoom(t, 3, 'wavelength')
+    const [host, guest] = users as [string, string]
+    expect(await t.call(guest, 'wavelength_lobby', roomId)).toEqual({ competitive: false })
+    await expect(t.call(guest, 'wavelength_set_settings', roomId, true)).rejects.toThrow(
+      'not_host',
+    )
+    await t.call(host, 'wavelength_set_settings', roomId, true)
+    expect(await t.call(guest, 'wavelength_lobby', roomId)).toEqual({ competitive: true })
+    expect(await t.call(randomUUID(), 'wavelength_lobby', roomId)).toBeNull()
+    await t.call(host, 'wavelength_start', roomId)
+    await expect(t.call(host, 'wavelength_set_settings', roomId, false)).rejects.toThrow(
+      'wrong_phase',
+    )
+  })
+
+  it('stays cooperative unless chosen', async () => {
+    const g = await startGame(3)
+    expect((await g.state()).competitive).toBe(false)
+    await g.playShared()
+    expect((await g.snap(g.host)).scores).toEqual({})
+  })
+
+  it('needs three players', async () => {
+    const { users, roomId } = await createRoom(t, 2, 'wavelength')
+    await t.call(users[0]!, 'wavelength_set_settings', roomId, true)
+    await expect(t.call(users[0]!, 'wavelength_start', roomId)).rejects.toThrow(
+      'not_enough_players',
+    )
+  })
+
+  it('allows only individual guessing', async () => {
+    const g = await startCompetitive()
+    const { giver } = await g.roles()
+    await expect(g.act(giver, 'give_clue', 'shared', 'x')).rejects.toThrow('invalid_action')
+  })
+
+  it('gives guessers their own points and the clue-giver the average', async () => {
+    const g = await startCompetitive()
+    // 4, 3 and 0 points: the average of 7/3 is rounded to 2.3.
+    const { giver, guessers } = await g.play([0, 8, 40])
+    const [a, b, c] = guessers as [string, string, string]
+    expect(await g.scores()).toEqual({ [a]: 4, [b]: 3, [c]: 0, [giver]: 2.3 })
+    expect(Number((await g.state()).round_points)).toBe(2.3)
+  })
+
+  it('adds up over rounds, and starts at zero in a new game', async () => {
+    const g = await startCompetitive(3)
+    const total: Record<string, number> = {}
+    for (let round = 0; round < 3; round++) {
+      const { giver, guessers } = await g.play([0, 8]) // 4 and 3, average 3.5
+      total[guessers[0]!] = (total[guessers[0]!] ?? 0) + 4
+      total[guessers[1]!] = (total[guessers[1]!] ?? 0) + 3
+      total[giver] = (total[giver] ?? 0) + 3.5
+      await g.act(g.host, 'next_round')
+    }
+    expect(await g.scores()).toEqual(total)
+    await t.call(g.host, 'return_to_lobby', g.roomId)
+    await t.call(g.host, 'wavelength_start', g.roomId)
+    expect(await g.scores()).toEqual({})
+  })
+
+  it('averages only the guesses that are in, when offline players are skipped', async () => {
+    const g = await startCompetitive(4)
+    const { giver, guessers } = await g.play([0, 8])
+    const missing = guessers[2]!
+    await t.db.query(
+      `update private.heartbeats set last_seen = now() - interval '2 minutes'
+       where room_id = $1 and user_id = $2`,
+      [g.roomId, missing],
+    )
+    await g.act(g.host, 'force_reveal')
+    const scores = await g.scores()
+    expect(scores[giver]).toBe(3.5)
+    expect(scores[missing]).toBeUndefined()
+  })
+
+  it('ends when fewer than three players remain', async () => {
+    const g = await startCompetitive(3)
+    await t.call(g.users[2]!, 'leave_room', g.roomId)
+    expect((await g.state()).phase).toBe('game_over')
+  })
+
+  it('lets clients read scores but not change them', async () => {
+    const g = await startCompetitive(3)
+    await g.play([0, 8])
+    await expect(
+      t.as(g.host, 'update wavelength_scores set score = 99 where room_id = $1', [g.roomId]),
+    ).rejects.toThrow('permission denied')
+    expect(
+      await t.as(randomUUID(), 'select * from wavelength_scores where room_id = $1', [g.roomId]),
+    ).toEqual([])
+  })
+})
