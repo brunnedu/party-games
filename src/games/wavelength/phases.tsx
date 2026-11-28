@@ -5,6 +5,7 @@ import { errorText } from '../../core/rpc'
 import { Avatar, avatarFor } from '../../core/ui/Avatar'
 import { ErrorMessage } from '../../core/ui/components'
 import { Confetti } from '../../core/ui/Confetti'
+import { InviteBanner } from '../../core/ui/Invite'
 import { AvatarProgress, Waiting } from '../../core/ui/Waiting'
 import type { Mode, RoundActions, Snapshot } from './api'
 import { Dial } from './Dial'
@@ -287,7 +288,7 @@ export function Reveal({
           </ul>
         </section>
       )}
-      {!isFinal && <p className="banner center">{s.joinNow(room.code)}</p>}
+      {!isFinal && <InviteBanner room={room} text={s.joinNow(room.code)} />}
       {isHost || game.giver_id === userId ? (
         <button className="button" disabled={busy} onClick={() => run(actions.nextRound)}>
           {isFinal ? s.finish : s.nextRound}

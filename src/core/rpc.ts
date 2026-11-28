@@ -9,9 +9,13 @@ export async function rpc<T = void>(fn: string, args: Record<string, unknown>): 
   return data as T
 }
 
+export function errorCode(error: unknown): string {
+  return (error as { message?: string } | null)?.message ?? ''
+}
+
 /** Turns an error from the database into a readable message. */
 export function errorText(error: unknown): string {
-  const message = (error as { message?: string } | null)?.message ?? ''
+  const message = errorCode(error)
   if (Object.hasOwn(t.errors, message)) return t.errors[message as ErrorCode]
   console.error(error)
   return t.errors.unknown

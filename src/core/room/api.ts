@@ -20,7 +20,7 @@ export interface RoomSnapshot {
   players: Player[]
 }
 
-/** What anyone with the code may know about a room. */
+/** What someone who may enter a room may know about it. */
 export interface RoomInfo {
   game_type: string
   status: Room['status']
@@ -28,16 +28,40 @@ export interface RoomInfo {
   joinable: boolean
 }
 
+/** Without the password or a valid invite, nothing else is told. */
+export type RoomLookup =
+  | (RoomInfo & { access_required: false })
+  | { access_required: true }
+
+/** An empty invite is left out, so that the call also works without one. */
+const withInvite = (invite: string) => (invite ? { p_invite: invite } : {})
+
 export const CODE_LENGTH = 5
 
 export const roomApi = {
   create: (gameType: string, name: string) =>
     rpc<string>('create_room', { p_game_type: gameType, p_name: name }),
-  join: (code: string, name: string) => rpc<string>('join_room', { p_code: code, p_name: name }),
-  info: async (code: string) => {
-    const rows = await rpc<RoomInfo[]>('get_room_info', { p_code: code })
+  join: (code: string, name: string, invite = '') =>
+    rpc<string>('join_room', { p_code: code, p_name: name, ...withInvite(invite) }),
+  /** null: there is no such room. */
+  info: async (code: string, invite = '') => {
+    const rows = await rpc<RoomLookup[]>('get_room_info', {
+      p_code: code,
+      ...withInvite(invite),
+    })
     return rows[0] ?? null
   },
+  /** Throws "wrong_password" or "password_blocked". */
+  unlock: async (password: string) => {
+    const result = await rpc<'ok' | 'wrong' | 'blocked'>('unlock', { p_password: password })
+    if (result !== 'ok') {
+      throw new Error(result === 'blocked' ? 'password_blocked' : 'wrong_password')
+    }
+  },
+  /** The secret in a room's join link, for people in the room. */
+  invite: (roomId: string) => rpc<string>('room_invite', { p_room_id: roomId }),
+  /** For the owner's access log. */
+  noteReturn: (roomId: string) => rpc('note_return', { p_room_id: roomId }),
   snapshot: (code: string) => rpc<RoomSnapshot | null>('room_snapshot', { p_code: code }),
   heartbeat: (roomId: string) => rpc('heartbeat', { p_room_id: roomId }),
   leave: (roomId: string) => rpc('leave_room', { p_room_id: roomId }),

@@ -1,6 +1,7 @@
 // Runs the real migrations in PGlite (embedded Postgres) with a minimal
 // stand-in for the parts of Supabase they rely on.
 import { PGlite } from '@electric-sql/pglite'
+import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { randomUUID } from 'node:crypto'
 import { readdirSync, readFileSync } from 'node:fs'
 
@@ -8,6 +9,8 @@ const SUPABASE_STUB = `
   create role anon nologin;
   create role authenticated nologin;
   create schema auth;
+  -- Where Supabase keeps extensions such as pgcrypto.
+  create schema extensions;
   create function auth.uid() returns uuid language sql stable as
     $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
   grant usage on schema auth, public to anon, authenticated;
@@ -19,7 +22,7 @@ const SUPABASE_STUB = `
 `
 
 export async function createDatabase() {
-  const db = new PGlite()
+  const db = new PGlite({ extensions: { pgcrypto } })
   await db.exec(SUPABASE_STUB)
   const dir = new URL('../migrations/', import.meta.url)
   for (const file of readdirSync(dir).filter((f) => f.endsWith('.sql')).sort()) {

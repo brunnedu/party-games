@@ -3,6 +3,7 @@ import { useState, type FormEvent } from 'react'
 import type { Player, Room } from '../../core/room/api'
 import { Avatar } from '../../core/ui/Avatar'
 import { Confetti } from '../../core/ui/Confetti'
+import { InviteBanner } from '../../core/ui/Invite'
 import { Scoreboard } from '../../core/ui/Scoreboard'
 import { AvatarProgress, Waiting } from '../../core/ui/Waiting'
 import type { Reveal, RoundActions, Snapshot, SphinxAnswer } from './api'
@@ -337,7 +338,7 @@ export function Revealing(props: PhaseProps) {
             <h2>{s.scores}</h2>
             <Scoreboard players={players} scores={scores} userId={userId} />
           </section>
-          {!isFinal && <p className="banner center">{s.joinNow(room.code)}</p>}
+          {!isFinal && <InviteBanner room={room} text={s.joinNow(room.code)} />}
           {isHost || isSphinx ? (
             <button className="button" disabled={busy} onClick={() => run(actions.nextRound)}>
               {isFinal ? s.finish : s.nextRound}

@@ -4,6 +4,7 @@ import type { Player, Room } from '../../core/room/api'
 import { Avatar } from '../../core/ui/Avatar'
 import { useConfirm } from '../../core/ui/ConfirmDialog'
 import { Confetti } from '../../core/ui/Confetti'
+import { InviteBanner } from '../../core/ui/Invite'
 import { Scoreboard } from '../../core/ui/Scoreboard'
 import { AvatarProgress, Waiting } from '../../core/ui/Waiting'
 import type { RoundActions, Snapshot, Vote } from './api'
@@ -224,7 +225,7 @@ export function RoundResult({
           <VoteList votes={finalVotes} nameOf={nameOf} playerOf={playerOf} />
         </details>
       )}
-      <p className="banner center">{s.joinNow(room.code)}</p>
+      <InviteBanner room={room} text={s.joinNow(room.code)} />
       {isHost ? (
         <>
           <button className="button" disabled={busy} onClick={() => run(actions.nextRound)}>

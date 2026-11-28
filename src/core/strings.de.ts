@@ -48,11 +48,25 @@ export const t = {
 
   notInRoom: 'Du bist nicht mehr in diesem Raum.',
 
+  passwordTitle: 'Passwort nötig',
+  passwordHelp: 'Einmal pro Browser genügt.',
+  inviteInvalid:
+    'Dieser Einladungslink gilt nicht mehr. Scanne den aktuellen QR-Code oder gib das Passwort ein.',
+  password: 'Passwort',
+  unlock: 'Weiter',
+  invite: 'Einladen',
+  hideInvite: 'Einladung ausblenden',
+  accessNotice:
+    'Hinweis: Wer Räume öffnet, erstellt oder ihnen beitritt oder das Passwort eingibt, wird protokolliert (Zeit, IP-Adresse, Browser, eine Geräte-Kennung, Name und Raumcode). Die Einträge bleiben gespeichert, bis der Betreiber sie löscht.',
+
   setupMissing:
     'Supabase ist noch nicht eingerichtet. Lege eine Datei .env an (Vorlage: .env.example) und starte den Server neu.',
 
   errors: {
     room_not_found: 'Diesen Raum gibt es nicht.',
+    access_required: 'Dafür braucht es das Passwort.',
+    wrong_password: 'Das Passwort stimmt nicht.',
+    password_blocked: 'Zu viele Versuche. Versuche es später nochmal.',
     room_full: 'Der Raum ist voll.',
     game_running: 'Das Spiel läuft schon. Versuche es später nochmal.',
     invalid_vote: 'Dafür kannst du nicht stimmen.',
