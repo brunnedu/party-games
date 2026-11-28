@@ -1,3 +1,4 @@
+import { ditoCards } from '../src/games/dito/categories.de.ts'
 import { CATEGORIES_DE } from '../src/games/imposter/words.de.ts'
 import { ALL_WORDS_DE } from '../src/games/just-one/words.de.ts'
 import { SENTENCES_DE } from '../src/games/walter/sentences.de.ts'
@@ -55,10 +56,25 @@ export function walterSentencesSql(): string {
   ].join('\n')
 }
 
+/** The same for the category cards of "Dito!". */
+export function ditoCardsSql(): string {
+  const rows = ditoCards()
+    .map(([a, b]) => `  (${quote(a)}, ${quote(b)})`)
+    .join(',\n')
+  return [
+    '-- Generated from src/games/dito/categories.de.ts by `npm run words`. Do not edit.',
+    'delete from private.dito_cards;',
+    'insert into private.dito_cards (category_a, category_b) values',
+    `${rows};`,
+    '',
+  ].join('\n')
+}
+
 /** Migration name suffix -> SQL */
 export const WORD_MIGRATIONS = {
   just_one_words: justOneWordsSql,
   imposter_words: imposterWordsSql,
   wavelength_pairs: wavelengthPairsSql,
   walter_sentences: walterSentencesSql,
+  dito_cards: ditoCardsSql,
 }

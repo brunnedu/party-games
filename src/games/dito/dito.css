@@ -1,0 +1,281 @@
+/* ---- The grid -------------------------------------------------------------- */
+
+/* Three answer columns and a narrow one for the row bonuses. */
+.dito-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 1.6rem;
+  gap: 6px;
+  width: 100%;
+}
+
+.dito-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4.6rem;
+  padding: 6px 4px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+button.dito-cell {
+  border-color: var(--border-strong);
+}
+
+.dito-answer {
+  min-width: 0;
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+/* Circled and crossed, as on the wipeable board. */
+.dito-cell.circled::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 3px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dito-cell.crossed {
+  background:
+    linear-gradient(to top right, transparent calc(50% - 1.5px), var(--muted) 50%,
+      transparent calc(50% + 1.5px)),
+    linear-gradient(to top left, transparent calc(50% - 1.5px), var(--muted) 50%,
+      transparent calc(50% + 1.5px)),
+    var(--slot);
+}
+
+.dito-cell.crossed .dito-answer {
+  padding: 0 3px;
+  border-radius: 4px;
+  background: rgb(227 212 177 / 85%);
+  color: var(--muted);
+}
+
+.dito-star {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  color: var(--accent);
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.dito-note {
+  position: absolute;
+  bottom: 1px;
+  left: 4px;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.dito-cell.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent);
+}
+
+.dito-cell.claimed {
+  border-color: var(--accent);
+  background: var(--warn-bg);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.dito-cell.crossing {
+  border-style: dashed;
+  border-color: var(--accent);
+}
+
+.dito-cell.crossing .dito-answer {
+  text-decoration: line-through;
+}
+
+.dito-cell.hint {
+  border-style: dashed;
+  background: var(--warn-bg);
+}
+
+.dito-bonus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--surface);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ---- Categories and writing ------------------------------------------------ */
+
+.dito-category-option {
+  padding: 16px;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.card.dito-category {
+  border-top: 8px solid var(--accent);
+  text-align: center;
+}
+
+.dito-category-name {
+  font-family: var(--font-hand);
+  font-size: 2.2rem;
+  font-weight: 600;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.dito-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dito-number {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.dito-input.active .dito-number {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: var(--accent-text);
+}
+
+.dito-warning {
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: var(--warn-bg);
+}
+
+/* ---- Reveal ---------------------------------------------------------------- */
+
+.dito-claims,
+.dito-open-counts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dito-claims li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+  animation: pop-in 0.35s ease-out backwards;
+}
+
+.dito-claim-text {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dito-object-button {
+  flex: none;
+  min-height: 40px;
+  padding: 6px 10px;
+  background: var(--surface);
+  border: 2px solid var(--bad);
+  border-radius: var(--radius);
+  color: var(--bad);
+  font-weight: 700;
+}
+
+.card.dito-objection {
+  border: 3px solid var(--bad);
+}
+
+.dito-objection-question {
+  font-size: 1.2rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.card.dito-objection .button {
+  width: 100%;
+}
+
+.dito-read .secret-word {
+  font-size: clamp(2.4rem, 11vw, 3.4rem);
+}
+
+.dito-last {
+  overflow-wrap: anywhere;
+}
+
+.dito-open-counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 4px 12px;
+}
+
+.dito-open-counts li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+}
+
+.dito-open-counts li.reader {
+  background: var(--warn-bg);
+}
+
+.dito-open-counts strong {
+  margin-left: auto;
+}
+
+/* ---- Results --------------------------------------------------------------- */
+
+.dito-result summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.dito-result > p {
+  margin-bottom: 8px;
+}
+
+.dito-points {
+  margin-left: auto;
+  font-family: var(--font-hand);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.dito-final-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
