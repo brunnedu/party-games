@@ -1,0 +1,311 @@
+/* Team colors. Names are always written out too. */
+.decodo-red {
+  --team: #b0432b;
+}
+
+.decodo-blue {
+  --team: #3a5f8a;
+}
+
+/* ---- Lobby ----------------------------------------------------------------- */
+
+.decodo-team {
+  padding: 8px 10px;
+  border: 2px solid var(--team);
+  border-radius: var(--radius);
+}
+
+.decodo-team > strong {
+  color: var(--team);
+}
+
+.decodo-move {
+  min-height: 40px;
+  margin-left: auto;
+  padding: 4px 10px;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+
+/* ---- Tokens ---------------------------------------------------------------- */
+
+.decodo-tokens {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.decodo-tokens .card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  border-top: 6px solid var(--team);
+}
+
+.decodo-tokens .card.own {
+  border-color: var(--team);
+}
+
+.decodo-tokens strong {
+  color: var(--team);
+}
+
+.decodo-token-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+}
+
+.decodo-token-row > span:first-child {
+  margin-right: auto;
+}
+
+.decodo-token {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+}
+
+.decodo-token.good {
+  background: var(--good);
+  border-color: var(--good);
+}
+
+.decodo-token.bad {
+  background: var(--text);
+  border-color: var(--text);
+}
+
+/* ---- The secret words ------------------------------------------------------ */
+
+.card.decodo-words {
+  width: 100%;
+  /* The same size hidden and shown, so a glance gives nothing away. */
+  height: 12rem;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* Two classes, to win over ".card.secret". */
+.card.secret.decodo-red,
+.card.secret.decodo-blue {
+  border-top-color: var(--team);
+}
+
+.decodo-word-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.decodo-word-list > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.decodo-word {
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.decodo-digit {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--surface);
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* ---- Clues and codes ------------------------------------------------------- */
+
+.decodo-code {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.decodo-timer {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--warn-bg);
+  font-weight: 700;
+  text-align: center;
+}
+
+.decodo-timer.over {
+  border: 3px solid var(--bad);
+  color: var(--bad);
+}
+
+.decodo-note {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--warn-bg);
+}
+
+.decodo-writers,
+.decodo-clues,
+.decodo-results,
+.decodo-status {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.decodo-writers li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.decodo-writers strong {
+  color: var(--team);
+}
+
+.decodo-writers .tag {
+  margin-left: auto;
+}
+
+.decodo-clues li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.decodo-clue {
+  min-width: 0;
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.decodo-guess-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.decodo-guess-row > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.decodo-guess-row button {
+  min-height: 48px;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.decodo-guess-row button[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: var(--accent-text);
+}
+
+.decodo-results li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 6px 10px;
+  border-left: 6px solid var(--team);
+}
+
+.decodo-status li {
+  color: var(--team);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ---- Note sheet ------------------------------------------------------------ */
+
+.decodo-notes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.decodo-notes > div {
+  padding: 8px;
+  border: 2px solid var(--team);
+  border-radius: var(--radius);
+}
+
+.decodo-notes h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 6px;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.decodo-notes ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.decodo-notes li {
+  overflow-wrap: anywhere;
+}
+
+.decodo-notes li .muted {
+  font-size: 0.7rem;
+}
+
+/* ---- Ending ---------------------------------------------------------------- */
+
+label.decodo-judge {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+}
+
+.decodo-judge input {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+
+.decodo-final {
+  border-top: 6px solid var(--team);
+}
+
+.decodo-final ol {
+  margin: 8px 0 0;
+}

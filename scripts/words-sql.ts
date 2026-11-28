@@ -1,3 +1,4 @@
+import { WORDS_DE } from '../src/games/decodo/words.de.ts'
 import { ditoCards } from '../src/games/dito/categories.de.ts'
 import { CATEGORIES_DE } from '../src/games/imposter/words.de.ts'
 import { ALL_WORDS_DE } from '../src/games/just-one/words.de.ts'
@@ -70,6 +71,18 @@ export function ditoCardsSql(): string {
   ].join('\n')
 }
 
+/** The same for the keywords of "Decodo". */
+export function decodoWordsSql(): string {
+  const rows = WORDS_DE.map((w) => `  (${quote(w)})`).join(',\n')
+  return [
+    '-- Generated from src/games/decodo/words.de.ts by `npm run words`. Do not edit.',
+    'delete from private.decodo_words;',
+    'insert into private.decodo_words (word) values',
+    `${rows};`,
+    '',
+  ].join('\n')
+}
+
 /** Migration name suffix -> SQL */
 export const WORD_MIGRATIONS = {
   just_one_words: justOneWordsSql,
@@ -77,4 +90,5 @@ export const WORD_MIGRATIONS = {
   wavelength_pairs: wavelengthPairsSql,
   walter_sentences: walterSentencesSql,
   dito_cards: ditoCardsSql,
+  decodo_words: decodoWordsSql,
 }
