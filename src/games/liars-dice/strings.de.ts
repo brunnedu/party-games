@@ -7,12 +7,6 @@ export const s = {
     'Bluff mit Würfeln: Bietet auf die Würfel aller, auch wenn ihr nur eure eigenen seht.',
   dice,
 
-  orderTitle: 'Sitzreihenfolge',
-  orderHelpHost: 'Ordnet die Namen so, wie ihr sitzt. Gespielt wird von oben nach unten.',
-  orderHelp: 'Der Host ordnet die Namen so, wie ihr sitzt.',
-  moveUp: (name: string) => `${name} nach oben`,
-  moveDown: (name: string) => `${name} nach unten`,
-  shuffle: 'Zufällig mischen',
   startDice: 'Würfel pro Person',
 
   round: (n: number) => `Runde ${n}`,

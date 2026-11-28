@@ -157,6 +157,37 @@ details[open] summary {
   margin-bottom: 8px;
 }
 
+.seat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.seat-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+}
+
+.seat-buttons {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.seat-buttons button {
+  width: 44px;
+  height: 40px;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
+}
+
 @keyframes shake {
   20%,
   60% {

@@ -26,6 +26,7 @@ I built it in my free time, with the help of [Claude Code](https://claude.com/cl
 | **Just One** | 3–10 | Give one-word clues to help one player guess, but matching clues cancel out |
 | **Imposter** | 3–10 | Everyone knows the secret word, except one of you |
 | **Extreme Activity** | 4+ | Two teams explain, act, pose and make noises |
+| **Dito!** | 3–10 | Write what the others write too, because only shared answers score |
 
 The games are in German (Swiss spelling).
 
@@ -156,6 +157,37 @@ The game idea is by Urs Hostettler (Fata Morgana Spiele). Sentences and artwork 
   still be counted. Correct before tapping "Weitergeben".
 - The host can change the game phone at any time (this pauses the clock). If the host's phone fails,
   another player can take over as host and continue.
+
+</details>
+
+<details>
+<summary><b>Dito!</b></summary>
+
+- 3–10 players. Players can only join in the lobby, where the host sets the seating order.
+- **Writing:** three rounds with three categories each. Players take turns picking one of two
+  categories on a card. Everyone writes three answers into free cells of their 3×3 grid; answers
+  can be changed until everyone is done, then they stay put. At most two words, except names, fixed
+  terms and sayings. No answer twice in a round. Standard German, no dialect.
+- **Reveal:** one at a time, a player reads one of their open answers. Everyone else with the same
+  answer, from any category, circles it, and so does the reader. If exactly one other has it, both
+  also get a BFF star. If nobody has it, the reader's answer is crossed out.
+- **What counts as the same:** plurals, capitals and typos do, and so do synonyms. A broader or
+  narrower term doesn't, nor does the other language (English or German). The app preselects
+  answers that differ only in capitals, punctuation, spaces, or "ß" for "ss". It highlights likely
+  plurals and typos; you tap them yourself.
+- **Two fitting answers:** circle one; the other is crossed out.
+- **Objections:** you can object to what another player changed. Everyone but that player votes,
+  and it is rejected only by a majority. "Weiter" accepts everything else. It unlocks 5 seconds
+  after the last change.
+- A round ends as soon as someone has no open answer left. Open answers score nothing.
+- **Points:** 1 per circled answer, 2 per BFF star (1 if three players start the round). Full rows
+  give 3, 2 and 1 bonus points from the top, full columns 1, 2 and 3 from the left.
+- The player with the lowest total reads first (at random in round 1). Most points after three
+  rounds wins; a tie goes to the best single round.
+- The host can go on without people who are offline. Below 3 players the game ends.
+
+The game idea is by Martin Ang (published as JinxO and, in German, by Game Factory). Categories and
+artwork here are our own.
 
 </details>
 

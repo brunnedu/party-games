@@ -1,4 +1,5 @@
 import type { GameDefinition } from '../core/game'
+import { dito } from './dito'
 import { extremeActivity } from './extreme-activity'
 import { imposter } from './imposter'
 import { justOne } from './just-one'
@@ -13,6 +14,7 @@ export const GAMES: readonly GameDefinition[] = [
   walter,
   liarsDice,
   extremeActivity,
+  dito,
 ]
 
 export function findGame(id: string | undefined) {

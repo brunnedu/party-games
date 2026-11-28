@@ -1,0 +1,122 @@
+// All "Dito!" text. Swiss spelling: "ss" instead of the sharp s.
+export const s = {
+  name: 'Dito!',
+  description: 'Schreibt, was die anderen auch schreiben. Nur gleiche Antworten bringen Punkte.',
+
+  round: (n: number) => `Runde ${n} von 3`,
+  category: (n: number) => `Kategorie ${n} von 3`,
+
+  yourGrid: 'Dein Raster',
+  gridOf: (name: string) => `Raster von ${name}`,
+  rowBonus: (n: number) => `Bonus für diese Reihe: ${n}`,
+  columnBonus: (n: number) => `Bonus für diese Spalte: ${n}`,
+  cellLabel: (row: number, column: number) => `Feld ${row}, ${column}`,
+  states: { open: 'offen', circled: 'eingekreist', crossed: 'durchgestrichen' },
+  star: 'BFF-Stern',
+
+  chooseTitle: 'Wähle eine Kategorie',
+  chooseHelp: 'Lies sie dann laut vor.',
+  waitingForChoice: (name: string) => `${name} wählt eine Kategorie …`,
+
+  writeHelp:
+    'Schreib drei Antworten, die möglichst viele auch haben. Tippe eine Antwort an und dann ein freies Feld.',
+  answerLabel: (n: number) => `Antwort ${n}`,
+  place: (n: number) => `Antwort ${n} in ein Feld legen`,
+  placing: (n: number) => `Wohin mit Antwort ${n}?`,
+  longWarning: 'Mehr als zwei Wörter sind nur für Namen, feste Begriffe und Redewendungen erlaubt.',
+  repeatWarning: 'Jede Antwort darfst du pro Runde nur einmal schreiben.',
+  spellingHint: 'Schreibt Hochdeutsch, kein Dialekt.',
+  submit: 'Antworten abgeben',
+  change: 'Änderungen speichern',
+  saved: 'Abgegeben. Du kannst noch ändern, bis alle fertig sind.',
+  progress: (done: number, total: number) => `${done} von ${total} sind fertig`,
+
+  youRead: 'Du bist dran!',
+  isReading: (name: string) => `${name} ist dran`,
+  pickAnswer: 'Tippe eine offene Antwort an und lies sie vor.',
+  readThis: (answer: string) => `«${answer}» vorlesen`,
+  readFirst: 'Wähle zuerst eine Antwort',
+  waitingForAnswer: (name: string) => `${name} wählt eine Antwort …`,
+  openAnswers: 'Noch offen',
+
+  lastTitle: (answer: string) => `«${answer}»`,
+  lastNone: (name: string) => `Niemand sonst. Bei ${name} durchgestrichen.`,
+  lastBff: (names: string) => `BFF-Stern für ${names}!`,
+  lastMany: (names: string) => `Dito! Eingekreist bei ${names}.`,
+
+  readsLabel: (name: string) => `${name} liest vor:`,
+  youReadLabel: 'Du liest vor:',
+  claimsTitle: 'Wer hat das auch?',
+  noClaims: 'Bisher niemand.',
+  automatic: 'gleich geschrieben',
+  manual: 'von Hand',
+  settled: 'abgestimmt',
+  removed: 'zählt die eigene Antwort nicht',
+  crosses: (answers: string) => `Streicht auch: ${answers}`,
+  object: 'Einspruch',
+  objectTo: (name: string) => `Einspruch gegen ${name}`,
+
+  claimHelp:
+    'Hast du dasselbe in anderen Worten? Tippe die Antwort an. Gelb markiert: vielleicht Mehrzahl oder Tippfehler.',
+  claimHelpAuto:
+    'Deine gleiche Antwort ist schon eingekreist. Tippe sie an, wenn sie nicht passt.',
+  alsoHelp: 'Hast du noch eine Antwort, die dasselbe meint? Tippe sie an, sie wird durchgestrichen.',
+  maybe: 'passt das?',
+  circleInstead: (answer: string) => `Stattdessen «${answer}» einkreisen`,
+  alsoCross: (answer: string) => `«${answer}» meint auch dasselbe: durchstreichen`,
+  keepOpen: (answer: string) => `«${answer}» doch nicht durchstreichen`,
+  cancel: 'Abbrechen',
+
+  next: 'Weiter',
+  nextSoon: 'Weiter (gleich möglich)',
+  nextHelp: '«Weiter» nimmt alles an, wogegen niemand Einspruch erhoben hat.',
+  waitingForReader: (name: string) => `${name} tippt auf «Weiter», wenn alle bereit sind.`,
+
+  objectionTitle: 'Einspruch!',
+  objectionBy: (by: string, target: string) => `${by} gegen ${target}`,
+  objectionClaim: (read: string, answer: string) => `Zählt «${answer}» als «${read}»?`,
+  objectionRemove: (read: string) =>
+    `Zählt die gleich geschriebene Antwort wirklich nicht als «${read}»?`,
+  objectionRemoveHelp: '«Die Änderung gilt» heisst: Die Antwort zählt nicht.',
+  objectionAlso: (answers: string) => `Zusätzlich durchstreichen: ${answers}`,
+  objectionHelp: 'Redet darüber. Abgelehnt wird nur mit einer Mehrheit, bei Gleichstand gilt es.',
+  voteAccept: 'Die Änderung gilt',
+  voteReject: 'Ablehnen',
+  voted: 'Deine Stimme ist da. Du kannst sie noch ändern.',
+  votesIn: (done: number, total: number) => `${done} von ${total} haben abgestimmt`,
+  othersVote: 'Die anderen stimmen ab.',
+  closeVote: 'Abstimmung schliessen',
+
+  roundOver: (n: number) => `Runde ${n} ist vorbei`,
+  points: (n: number) => `+${n}`,
+  breakdown: (circles: number, stars: number, starPoints: number, bonus: number) =>
+    `Kreise ${circles} · BFF-Sterne ${stars} (+${starPoints}) · Bonus ${bonus}`,
+  starNote: 'Zu dritt ist ein BFF-Stern 1 Punkt wert.',
+  allGrids: 'Alle Raster',
+  scores: 'Punktestand',
+  nextRound: 'Nächste Runde',
+  finish: 'Zur Rangliste',
+  waitingForNext: 'Gleich geht es weiter …',
+
+  gameOver: 'Spiel vorbei!',
+  winners: (names: string, several: boolean) => `${names} ${several ? 'gewinnen' : 'gewinnt'}!`,
+  noWinner: 'Diesmal gab es keine Punkte.',
+  bestRound: (n: number) => `beste Runde: ${n}`,
+  tieNote: 'Bei Gleichstand zählt die beste einzelne Runde.',
+  playAgain: 'Zurück zur Lobby',
+  waitingForRematch: 'Der Host kann euch zurück in die Lobby bringen.',
+
+  hostTools: 'Host-Optionen',
+  forceContinue: 'Ohne offline Personen weiter',
+  skip: (name: string) => `${name} überspringen (offline)`,
+  confirmForReader: (name: string) => `Weiter für ${name} (offline)`,
+  abort: 'Spiel abbrechen',
+  confirmAbort: {
+    title: 'Spiel abbrechen?',
+    text: 'Alle kehren zur Lobby zurück. Die Punkte gehen verloren.',
+    confirmLabel: 'Spiel abbrechen',
+  },
+
+  credit: 'Nach der Spielidee «Dito!» (JinxO) von Martin Ang.',
+  unknownPlayer: 'Ehemalige Person',
+}
