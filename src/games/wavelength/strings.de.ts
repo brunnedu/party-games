@@ -4,9 +4,31 @@ const points = (n: number) => n.toLocaleString('de-CH', { maximumFractionDigits:
 export const s = {
   name: 'Wavelength',
   description:
-    'Kooperatives Einschätzspiel: Wo liegt der Hinweis auf der Skala? Trefft die Wellenlänge!',
+    'Einschätzspiel, miteinander oder gegeneinander: Wo liegt der Hinweis auf der Skala? Trefft die Wellenlänge!',
 
   points,
+
+  variantTitle: 'Spielart',
+  variants: { cooperative: 'Kooperativ', competitive: 'Wettkampf' },
+  variantHelp: {
+    cooperative: 'Ihr sammelt gemeinsam Punkte.',
+    competitive:
+      'Alle tippen einzeln und sammeln eigene Punkte. Wer den Hinweis gibt, bekommt den Durchschnitt der anderen. Ab 3 Personen.',
+  },
+  ownScore: (n: number) => `Deine Punkte: ${points(n)}`,
+  competitiveHelp:
+    'Alle tippen geheim und behalten ihre Punkte. Du bekommst den Durchschnitt.',
+  giverGets: (name: string) => `${name} gab den Hinweis und bekommt den Durchschnitt.`,
+  youGave: 'Du hast den Hinweis gegeben und bekommst den Durchschnitt.',
+  giverTag: 'Hinweis',
+  satOut: 'Diesmal ohne Tipp',
+  scores: 'Punktestand',
+  winners: (names: string, several: boolean) => `${names} ${several ? 'gewinnen' : 'gewinnt'}!`,
+  noWinner: 'Diesmal gab es keine Punkte.',
+  endedEarlyCompetitive:
+    'Das Spiel wurde vorzeitig beendet, weil weniger als 3 Personen übrig sind.',
+  average: (n: number) => `Ø ${points(n)}`,
+
   round: (n: number, total: number) => `Runde ${n} von ${total}`,
   score: (n: number) => `Punkte: ${points(n)}`,
   youGive: 'Du gibst den Hinweis!',
@@ -52,7 +74,7 @@ export const s = {
   },
   roundPoints: (p: number) => `+${points(p)} ${p === 1 ? 'Punkt' : 'Punkte'}`,
   averageNote: 'Durchschnitt aller Tipps',
-  guessPoints: (p: number) => `${p} ${p === 1 ? 'Punkt' : 'Punkte'}`,
+  guessPoints: (p: number) => `${points(p)} ${p === 1 ? 'Punkt' : 'Punkte'}`,
   nextRound: 'Nächste Runde',
   finish: 'Zum Ergebnis',
   waitingForNext: 'Gleich geht es weiter …',

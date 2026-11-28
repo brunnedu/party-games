@@ -1,5 +1,6 @@
 import type { GameDefinition } from '../../core/game'
 import { wavelengthApi } from './api'
+import { WavelengthLobbySettings } from './LobbySettings'
 import { WavelengthLogo } from './Logo'
 import { s } from './strings.de'
 import { WavelengthGame } from './WavelengthGame'
@@ -13,5 +14,6 @@ export const wavelength: GameDefinition = {
   minPlayers: 2,
   maxPlayers: 10,
   start: wavelengthApi.start,
+  LobbySettings: WavelengthLobbySettings,
   View: WavelengthGame,
 }
