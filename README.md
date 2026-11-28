@@ -151,8 +151,8 @@ select * from private.access_status;                         -- how full the log
 - IP addresses help to recognize visitors but can be misleading or faked.
 - Repeats within an hour are left out, and there are limits per hour, so heavy traffic leaves gaps.
 - **Entries are kept until you delete them.** At 100,000 entries new ones stop; the game keeps
-  working. The app tells users that entries are kept. IP addresses with names are personal data, so
-  delete what you no longer need, or what someone asks you to:
+  working. The app shows no notice about the log, so tell the people you play with. IP addresses with
+  names are personal data, so delete what you no longer need, or what someone asks you to:
 
   ```sql
   delete from private.access_log where at < now() - interval '90 days';

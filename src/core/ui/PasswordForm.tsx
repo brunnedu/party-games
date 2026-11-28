@@ -51,7 +51,6 @@ export function PasswordForm({
         </button>
       )}
       <ErrorMessage>{error}</ErrorMessage>
-      <p className="muted notice">{t.accessNotice}</p>
     </form>
   )
 }

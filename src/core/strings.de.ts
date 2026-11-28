@@ -56,8 +56,6 @@ export const t = {
   unlock: 'Weiter',
   invite: 'Einladen',
   hideInvite: 'Einladung ausblenden',
-  accessNotice:
-    'Hinweis: Wer Räume öffnet, erstellt oder ihnen beitritt oder das Passwort eingibt, wird protokolliert (Zeit, IP-Adresse, Browser, eine Geräte-Kennung, Name und Raumcode). Die Einträge bleiben gespeichert, bis der Betreiber sie löscht.',
 
   setupMissing:
     'Supabase ist noch nicht eingerichtet. Lege eine Datei .env an (Vorlage: .env.example) und starte den Server neu.',
