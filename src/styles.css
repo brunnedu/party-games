@@ -419,10 +419,6 @@ li > a.game-card:focus-visible {
   align-self: stretch;
 }
 
-.notice {
-  font-size: 0.8rem;
-}
-
 /* ---- Confirmation dialog ------------------------------------------------- */
 
 .confirm-dialog {
