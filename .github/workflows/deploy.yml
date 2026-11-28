@@ -31,7 +31,7 @@ jobs:
           KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
         run: |
           if [ -z "$URL" ] || [ -z "$KEY" ]; then
-            echo "::error::Set the repository variables VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (see README)."
+            echo "::error::Set the repository variables VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY under Settings, Secrets and variables, Actions, Variables."
             exit 1
           fi
       - run: npm run build
