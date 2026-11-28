@@ -7,6 +7,7 @@ import { InviteBanner } from '../../core/ui/Invite'
 import { Scoreboard } from '../../core/ui/Scoreboard'
 import { AvatarProgress, Waiting } from '../../core/ui/Waiting'
 import type { Reveal, RoundActions, Snapshot, SphinxAnswer } from './api'
+import { pointsBreakdown } from './breakdown'
 import { Sentence, SentenceCard } from './Sentence'
 import { s } from './strings.de'
 
@@ -294,6 +295,7 @@ export function Revealing(props: PhaseProps) {
   const isFinal = done && game.rounds_played >= game.rounds_total
   const gained = Object.entries(game.round_points ?? {}).sort((a, b) => b[1] - a[1])
   const iScored = Boolean(game.round_points?.[userId])
+  const breakdown = done ? pointsBreakdown(reveals, game.sphinx_id, game.sphinx_foul) : {}
   // Newest on top, so nobody has to scroll to see what just happened. Sorted by
   // position, which is the order of revealing.
   const newestFirst = [...reveals].sort((a, b) => b.position - a.position)
@@ -327,7 +329,17 @@ export function Revealing(props: PhaseProps) {
                 {gained.map(([id, points]) => (
                   <li key={id}>
                     <Avatar player={playerOf(id)} small />
-                    <span className="player-name">{nameOf(id)}</span>
+                    <span className="point-source">
+                      <span className="player-name">{nameOf(id)}</span>
+                      {(['truth', 'fake', 'sphinx'] as const).map((kind) => {
+                        const n = breakdown[id]?.[kind]
+                        return n ? (
+                          <span key={kind} className="muted">
+                            {s.reasons[kind](n)}
+                          </span>
+                        ) : null
+                      })}
+                    </span>
                     <strong className="gained">{s.gained(points)}</strong>
                   </li>
                 ))}

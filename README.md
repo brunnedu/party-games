@@ -79,11 +79,13 @@ React, TypeScript, Supabase and GitHub Pages.
 - The Sphinx's answer is then locked. Only the Sphinx sees all answers, can practise and shuffle
   them, and reads them aloud with their numbers. Others vote by number.
 - You can't vote for your own answer, unless somebody wrote the same.
-- Answers match if they differ only in capitals, punctuation and spaces.
+- Answers match if they differ only in capitals, punctuation, spaces, or "ß" for "ss".
 - Points: 1 for picking the truth; 1 per vote on your fake; the Sphinx gets 1 per correct vote.
   Everyone who wrote one of several matching answers gets nothing for it (the truth included).
-- With 4 or more players, the Sphinx gets nothing if every vote finds the truth. (The original
-  rulebook has this for any number; it also penalizes revealing reading, which is left to the group.)
+- With 4 or more players, the Sphinx gets nothing if every vote finds the truth, provided at least
+  two votes are in. (The original rulebook has this for any number of players; it also penalizes
+  revealing reading, which is left to the group.) After each round, the app shows where every point
+  came from.
 - Reveal order: fakes with votes (fewest first), the truth, then fakes without votes.
 - The host can go on without people who are offline, or replace a round before the reveal. New players
   can join between rounds. If the Sphinx leaves before the reveal, the round is replaced. Below 3
