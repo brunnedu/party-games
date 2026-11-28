@@ -34,14 +34,21 @@ export const t = {
   leave: 'Raum verlassen',
   confirmLeave: {
     title: 'Raum verlassen?',
-    text: 'Solange das Spiel noch nicht läuft, kannst du wieder beitreten.',
+    text: 'In der Lobby kannst du wieder beitreten. Dafür brauchst du die Einladung (QR-Code oder Link) oder das Passwort.',
     confirmLabel: 'Verlassen',
   },
-  confirmLeaveRunning: {
+  /** While a game is running; what is true depends on the game. */
+  confirmLeaveRunning: (rejoin: 'never' | 'between-rounds' | 'anytime') => ({
     title: 'Raum verlassen?',
-    text: 'Während eines laufenden Spiels kannst du nicht wieder einsteigen.',
+    text: {
+      never: 'In dieses laufende Spiel kannst du nicht wieder einsteigen.',
+      'between-rounds':
+        'Wieder einsteigen kannst du erst zwischen zwei Runden. Dafür brauchst du die Einladung (QR-Code oder Link) oder das Passwort.',
+      anytime:
+        'Du kannst während des Spiels wieder beitreten. Dafür brauchst du die Einladung (QR-Code oder Link) oder das Passwort.',
+    }[rejoin],
     confirmLabel: 'Verlassen',
-  },
+  }),
   dialogBack: 'Zurück',
   hostOffline: (name: string) => `${name} (Host) ist offline.`,
   claimHost: 'Host übernehmen',

@@ -30,6 +30,12 @@ export interface GameDefinition {
   maxPlayers: number
   /** Replaces the "2–10 Personen" line, if phones and people differ. */
   playersLabel?: string
+  /**
+   * When people can join while a game is running; left out means never. Only
+   * used to word the leave question. Keep in sync with where the game sets
+   * rooms.open_to_join.
+   */
+  rejoin?: 'between-rounds' | 'anytime'
   /** Starts the game for a room (host only). */
   start: (roomId: string) => Promise<unknown>
   /** Optional extra card in the lobby, e.g. for settings the host chooses. */

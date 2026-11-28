@@ -125,7 +125,10 @@ function RoomView({
   const props = { room, players, userId, online, refresh }
 
   function leave() {
-    const question = room.status === 'playing' ? t.confirmLeaveRunning : t.confirmLeave
+    const question =
+      room.status === 'playing'
+        ? t.confirmLeaveRunning(game.rejoin ?? 'never')
+        : t.confirmLeave
     leaveConfirm.ask(question, () =>
       void run(async () => {
         await roomApi.leave(room.id)

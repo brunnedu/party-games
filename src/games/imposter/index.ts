@@ -12,6 +12,7 @@ export const imposter: GameDefinition = {
   color: '#c9b3dd',
   minPlayers: 3,
   maxPlayers: 10,
+  rejoin: 'between-rounds',
   start: imposterApi.start,
   View: ImposterGame,
 }

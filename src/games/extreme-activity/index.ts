@@ -15,6 +15,7 @@ export const extremeActivity: GameDefinition = {
   minPlayers: 1,
   maxPlayers: 10,
   playersLabel: s.playersLabel,
+  rejoin: 'anytime',
   start: activityApi.start,
   LobbySettings: ActivityLobbySettings,
   View: ActivityGame,
