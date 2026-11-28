@@ -122,8 +122,10 @@ QR code and the copied link carry, so guests who scan it type only their name. A
 link can join while that room takes new players. Removing someone replaces the invite. The database
 checks all of this. A browser enters the password once.
 
-**Protection is off until you set a password**, in the SQL Editor. Use four or more random words,
-and delete the saved query afterwards, because it contains the password:
+**Protection is off until you set a password**, in the SQL Editor. It needs at least 9 characters.
+Pick one that is hard to guess (not a common word or name with a number) and that you use nowhere
+else; several random words work well. Delete the saved query afterwards, because it contains the
+password:
 
 ```sql
 select private.set_app_password('...');       -- set or change; every browser has to enter it again
