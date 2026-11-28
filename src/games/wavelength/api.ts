@@ -21,6 +21,8 @@ export interface Game {
   /** null until the reveal. */
   target: number | null
   round_points: number | null
+  /** Everyone scores for themselves. */
+  competitive: boolean
 }
 
 export interface Guess {
@@ -44,11 +46,17 @@ export interface Snapshot {
   /** Only the clue-giver gets this. */
   secret_target: number | null
   guesses: Guess[]
+  /** Points per player; only filled in competitive games. */
+  scores: Record<string, number>
   history: HistoryEntry[]
 }
 
 export const wavelengthApi = {
   start: (roomId: string) => rpc('wavelength_start', { p_room_id: roomId }),
+  lobby: (roomId: string) =>
+    rpc<{ competitive: boolean } | null>('wavelength_lobby', { p_room_id: roomId }),
+  setCompetitive: (roomId: string, competitive: boolean) =>
+    rpc('wavelength_set_settings', { p_room_id: roomId, p_competitive: competitive }),
   snapshot: (roomId: string) =>
     rpc<Snapshot | null>('wavelength_snapshot', { p_room_id: roomId }),
 }

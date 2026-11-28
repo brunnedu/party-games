@@ -184,16 +184,22 @@ select * from private.access_status;                         -- how full the log
 
 ### Wavelength rules
 
-- 2–10 players, cooperative. Everyone gives the same number of clues: 3 each with 2–3 players, 2 with
-  4–6, 1 with 7–10. The number of rounds is fixed when the game starts.
+- 2–10 players, **cooperative** or **competitive** (at least 3). The host chooses in the lobby, and
+  the choice is fixed once the game starts.
+- Everyone gives the same number of clues: 3 each with 2–3 players, 2 with 4–6, 1 with 7–10. The
+  number of rounds is fixed when the game starts.
 - The clue-giver holds a button to see the target. Typing the clue is optional.
-- For each round, the clue-giver picks **shared** (one dial; all must confirm, moving it resets
-  confirmations) or **individual** (secret guesses; the round is worth the average of their points).
+- Cooperative: for each round, the clue-giver picks **shared** (one dial; all must confirm, moving it
+  resets confirmations) or **individual** (secret guesses; the round is worth the average of their
+  points).
+- Competitive: everyone guesses secretly and keeps the points of their guess. The clue-giver gets the
+  average of the guesses that are in, to one decimal. Most points win. People who are skipped
+  because they are offline get nothing; late joiners give fewer clues. Below 3 players the game ends.
 - Distance from the target on a scale of 0–100: up to 4 earns 4 points, up to 11 earns 3, up to 18
   earns 2.
 - The host can reveal without people who are offline, or replace a round (it doesn't count). New
   players can join between rounds.
-- If the clue-giver leaves, the round is replaced. Below 2 players the game ends.
+- If the clue-giver leaves, the round is replaced. A cooperative game ends below 2 players.
 
 While the shared dial is dragged, its position is previewed to others with Realtime **Broadcast**
 (about 8 messages per second). Only the position at release is saved. The preview is cosmetic: anyone

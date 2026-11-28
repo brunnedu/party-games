@@ -139,6 +139,8 @@
   font-family: var(--font-hand);
   font-size: 1.8rem;
   line-height: 1;
+  /* "Ø 2.3" stays on one line next to a long scale. */
+  white-space: nowrap;
 }
 
 @keyframes uncover {
